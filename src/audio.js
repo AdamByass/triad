@@ -86,8 +86,10 @@ function detectPitch(buf, sr){
 }
 
 // ===== MICROPHONE =====
+// min: quietest signal accepted (RMS). over: how far above background noise. clarity: how pitched the sound must be.
+const SENS = { normal:{min:0.0003, over:1.8, clarity:0.8}, high:{min:0.00008, over:1.35, clarity:0.72}, max:{min:0.00002, over:1.15, clarity:0.62} };
 const Mic = { stream:null, src:null, analyser:null, sink:null, buf:null, ok:false, err:null,
-  deafUntil:0, droneOn:false, floor:0.0004, hist:[], last:null, lastT:0, lastNonZero:0, lastPitchT:0, builtAt:0, rebuilds:0,
+  deafUntil:0, droneOn:false, floor:0.0001, hist:[], last:null, lastT:0, lastNonZero:0, lastPitchT:0, builtAt:0, rebuilds:0,
   live(){ return !!(this.ok && this.stream && this.stream.getAudioTracks().some(t=>t.readyState==='live')); },
   async start(){
     const c=ac();                                   // called inside the tap, so the context may start
@@ -95,7 +97,8 @@ const Mic = { stream:null, src:null, analyser:null, sink:null, buf:null, ok:fals
     this.stop(); this.err=null;
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ this.err={name:'Unsupported'}; return false; }
     try{
-      try{ this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); }
+      const boost = !(S.settings && S.settings.boost===false);   // auto gain lifts quiet singing on iPad
+      try{ this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:boost}}); }
       catch(e){ if(e && (e.name==='OverconstrainedError'||e.name==='TypeError')) this.stream = await navigator.mediaDevices.getUserMedia({audio:true}); else throw e; }
     }catch(e){ this.err=e; return false; }
     this.rebuilds=0;
@@ -134,14 +137,16 @@ const Mic = { stream:null, src:null, analyser:null, sink:null, buf:null, ok:fals
     const headphones = !!(S.settings && S.settings.headphones);
     const deaf = !headphones && (now<this.deafUntil || this.droneOn);
     let midi=null;
-    if(!deaf && r.freq>0 && r.clarity>=0.82 && r.rms>Math.max(0.0006,this.floor*2)){
+    const sens = SENS[(S.settings && S.settings.sens) || 'high'] || SENS.high;
+    const gate = Math.max(sens.min, Math.min(0.002, this.floor*sens.over));
+    if(!deaf && r.freq>0 && r.clarity>=sens.clarity && r.rms>gate){
       const m=freqToMidi(r.freq); if(this.hist.length && now-this.lastPitchT>160) this.hist.length=0;
       this.hist.push(m); if(this.hist.length>3) this.hist.shift();
       midi = this.hist.length<3 ? m : this.hist.slice().sort((x,y)=>x-y)[1];
       this.lastPitchT=now;
-    } else if(r.clarity<0.5){ this.floor = this.floor*0.97 + r.rms*0.03; }
+    } else if(r.clarity<0.5){ this.floor = Math.min(0.003, this.floor*0.97 + r.rms*0.03); }
     const db = r.rms>0 ? 20*Math.log10(r.rms) : -100;
-    this.last = { midi, freq:r.freq, clarity:r.clarity, rms:r.rms, level:Math.max(0,Math.min(1,(db+72)/60)), deaf, silent, running, live:this.live() };
+    this.last = { midi, freq:r.freq, clarity:r.clarity, rms:r.rms, level:Math.max(0,Math.min(1,(db+80)/55)), deaf, silent, running, live:this.live() };
     return this.last;
   }
 };

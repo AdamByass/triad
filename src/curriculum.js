@@ -19,7 +19,7 @@ const CURRICULUM = [
           stretch:'Two-chord changes Em ↔ D for one minute against the metronome at 60 bpm, one strum per bar. Count clean changes; log the number.'},
   piano:{core:'Find every C on the keyboard. Then play C D E F G F E D C with the right hand, one finger per key (thumb on C), saying each note name.',
          stretch:'Same five-finger pattern starting on G (G A B C D) and on F (F G A Bb C). Notice the black key in F.'},
-  voice:{core:'Pitch matching: the app plays a note, you hum it, then sing it on "ah". Start in the middle of your range. Most "bad singing" is a matching problem, not a voice problem: this is the foundation.',
+  voice:{core:'Pitch matching: the app plays one note, you sing the same note back, and the needle shows whether you are too low, too high or on it. Tap Listen to start; each new note plays by itself once you have held the last one in the green band. Sing on "ah" at talking volume, or hum first and then open to "ah". The note name in large letters is only a label; match the sound, not the name. Most "bad singing" is a matching problem, not a voice problem, so this is the foundation.',
          stretch:'Sing Frère Jacques in your range with the trainer checking each note.'},
   voiceTrainers:[{kind:'match',count:8},{kind:'seq',label:'Frère Jacques',fit:true,midi:[60,62,64,60,64,65,67,67,69,67,65,64,60,60,55,60]}],
   pianoTrainers:[{kind:'seq',label:'C five-finger pattern',pcs:['C','D','E','F','G','F','E','D','C']}],

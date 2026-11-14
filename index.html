@@ -133,6 +133,9 @@ canvas.trace{width:100%;height:96px;border:1px solid var(--line);border-radius:1
 .tr-msg a{color:var(--acc)}.tr-msg .btn{margin-left:8px}
 .toolgrid{grid-template-columns:repeat(4,1fr)}
 @media (max-width:640px){.toolgrid{grid-template-columns:1fr 1fr}.rc .ra{font-size:16px}}
+.howto{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--paper)}
+.howto summary{font-weight:600;cursor:pointer;color:var(--acc)}.howto ol{margin:8px 0 2px;padding-left:20px;font-size:14.5px}.howto li{margin:4px 0}
+.sensrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.pill.sm{min-height:32px;padding:4px 12px;font-size:13px}
 @media (max-width:640px){.strandbar{grid-template-columns:repeat(3,1fr)}.times{grid-template-columns:repeat(3,1fr)}.toolgrid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.placement .pl-grid{grid-template-columns:1fr}.opts.col{grid-template-columns:1fr}nav.tabs button{padding:8px 10px}.hwrap{flex-wrap:wrap}}
 </style>
 </head>
@@ -317,7 +320,7 @@ const CURRICULUM = [
           stretch:'Two-chord changes Em ↔ D for one minute against the metronome at 60 bpm, one strum per bar. Count clean changes; log the number.'},
   piano:{core:'Find every C on the keyboard. Then play C D E F G F E D C with the right hand, one finger per key (thumb on C), saying each note name.',
          stretch:'Same five-finger pattern starting on G (G A B C D) and on F (F G A Bb C). Notice the black key in F.'},
-  voice:{core:'Pitch matching: the app plays a note, you hum it, then sing it on "ah". Start in the middle of your range. Most "bad singing" is a matching problem, not a voice problem: this is the foundation.',
+  voice:{core:'Pitch matching: the app plays one note, you sing the same note back, and the needle shows whether you are too low, too high or on it. Tap Listen to start; each new note plays by itself once you have held the last one in the green band. Sing on "ah" at talking volume, or hum first and then open to "ah". The note name in large letters is only a label; match the sound, not the name. Most "bad singing" is a matching problem, not a voice problem, so this is the foundation.',
          stretch:'Sing Frère Jacques in your range with the trainer checking each note.'},
   voiceTrainers:[{kind:'match',count:8},{kind:'seq',label:'Frère Jacques',fit:true,midi:[60,62,64,60,64,65,67,67,69,67,65,64,60,60,55,60]}],
   pianoTrainers:[{kind:'seq',label:'C five-finger pattern',pcs:['C','D','E','F','G','F','E','D','C']}],
@@ -943,8 +946,10 @@ function detectPitch(buf, sr){
 }
 
 // ===== MICROPHONE =====
+// min: quietest signal accepted (RMS). over: how far above background noise. clarity: how pitched the sound must be.
+const SENS = { normal:{min:0.0003, over:1.8, clarity:0.8}, high:{min:0.00008, over:1.35, clarity:0.72}, max:{min:0.00002, over:1.15, clarity:0.62} };
 const Mic = { stream:null, src:null, analyser:null, sink:null, buf:null, ok:false, err:null,
-  deafUntil:0, droneOn:false, floor:0.0004, hist:[], last:null, lastT:0, lastNonZero:0, lastPitchT:0, builtAt:0, rebuilds:0,
+  deafUntil:0, droneOn:false, floor:0.0001, hist:[], last:null, lastT:0, lastNonZero:0, lastPitchT:0, builtAt:0, rebuilds:0,
   live(){ return !!(this.ok && this.stream && this.stream.getAudioTracks().some(t=>t.readyState==='live')); },
   async start(){
     const c=ac();                                   // called inside the tap, so the context may start
@@ -952,7 +957,8 @@ const Mic = { stream:null, src:null, analyser:null, sink:null, buf:null, ok:fals
     this.stop(); this.err=null;
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ this.err={name:'Unsupported'}; return false; }
     try{
-      try{ this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); }
+      const boost = !(S.settings && S.settings.boost===false);   // auto gain lifts quiet singing on iPad
+      try{ this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:boost}}); }
       catch(e){ if(e && (e.name==='OverconstrainedError'||e.name==='TypeError')) this.stream = await navigator.mediaDevices.getUserMedia({audio:true}); else throw e; }
     }catch(e){ this.err=e; return false; }
     this.rebuilds=0;
@@ -991,20 +997,22 @@ const Mic = { stream:null, src:null, analyser:null, sink:null, buf:null, ok:fals
     const headphones = !!(S.settings && S.settings.headphones);
     const deaf = !headphones && (now<this.deafUntil || this.droneOn);
     let midi=null;
-    if(!deaf && r.freq>0 && r.clarity>=0.82 && r.rms>Math.max(0.0006,this.floor*2)){
+    const sens = SENS[(S.settings && S.settings.sens) || 'high'] || SENS.high;
+    const gate = Math.max(sens.min, Math.min(0.002, this.floor*sens.over));
+    if(!deaf && r.freq>0 && r.clarity>=sens.clarity && r.rms>gate){
       const m=freqToMidi(r.freq); if(this.hist.length && now-this.lastPitchT>160) this.hist.length=0;
       this.hist.push(m); if(this.hist.length>3) this.hist.shift();
       midi = this.hist.length<3 ? m : this.hist.slice().sort((x,y)=>x-y)[1];
       this.lastPitchT=now;
-    } else if(r.clarity<0.5){ this.floor = this.floor*0.97 + r.rms*0.03; }
+    } else if(r.clarity<0.5){ this.floor = Math.min(0.003, this.floor*0.97 + r.rms*0.03); }
     const db = r.rms>0 ? 20*Math.log10(r.rms) : -100;
-    this.last = { midi, freq:r.freq, clarity:r.clarity, rms:r.rms, level:Math.max(0,Math.min(1,(db+72)/60)), deaf, silent, running, live:this.live() };
+    this.last = { midi, freq:r.freq, clarity:r.clarity, rms:r.rms, level:Math.max(0,Math.min(1,(db+80)/55)), deaf, silent, running, live:this.live() };
     return this.last;
   }
 };
 
 // ===== STATE & STORAGE =====
-const BUILD = 'Version 2 · 14 Nov 2026';
+const BUILD = 'Version 2.1 · 14 Nov 2026';
 const HOSTED_URL = 'https://adambyass.github.io/triad/';
 const STORE_KEY = 'triad.v1';
 const STRANDS = ['voice','theory','guitar','piano','songs'];
@@ -1014,9 +1022,10 @@ const unitById = id => CURRICULUM.find(u=>u.id===id);
 const unitIndex = id => CURRICULUM.findIndex(u=>u.id===id);
 
 function defaultState(){ return {v:2, updated:0, placed:false, unit:'u1', levels:{guitar:1,piano:0,voice:0,theory:0},
-  range:{low:45,high:64}, ratings:{}, completed:[], sessions:[], seenConcept:{}, session:null, bests:{}, metrics:[], settings:{headphones:false} }; }
+  range:{low:45,high:64}, ratings:{}, completed:[], sessions:[], seenConcept:{}, session:null, bests:{}, metrics:[], settings:{headphones:false, sens:'high', boost:true} }; }
 var S = defaultState();
 try { const raw = localStorage.getItem(STORE_KEY); if (raw) S = Object.assign(defaultState(), JSON.parse(raw)); } catch(e){}
+S.settings = Object.assign({headphones:false, sens:'high', boost:true}, S.settings||{});
 
 let dbDoc = null, saveTimer = null, cloudOK = false;
 function save(){
@@ -1126,6 +1135,10 @@ function micErrorMsg(){
   return `<b>The microphone could not start</b> (${esc(e.name||'unknown error')}). Close other apps using the microphone, reload the page and try again.`;
 }
 const micRowHTML = `<div class="microw"><div class="lvl"><i data-r="lvl"></i></div><span data-r="mstat">Microphone off</span></div>`;
+const SENS_LABEL = {normal:'Normal', high:'High', max:'Maximum'};
+function sensControlHTML(){ return `<div class="sensrow"><span class="small">Mic sensitivity</span>${Object.keys(SENS_LABEL).map(k=>`<button class="pill sm ${S.settings.sens===k?'on':''}" data-sens="${k}">${SENS_LABEL[k]}</button>`).join('')}</div>`; }
+function wireSens(root){ root.querySelectorAll('[data-sens]').forEach(b=>b.onclick=()=>{ S.settings.sens=b.dataset.sens; save();
+  document.querySelectorAll('[data-sens]').forEach(x=>x.classList.toggle('on',x.dataset.sens===S.settings.sens)); }); }
 function micStatusText(st, hearing){
   if(!st.running) return 'Audio is paused: tap anywhere on the page';
   if(st.silent) return 'No signal from the microphone';
@@ -1147,6 +1160,15 @@ function buildTargets(spec){
   const shift = Math.round(mid-(lo+hi)/2);
   return dedupe(src.map(x=>x+shift)).map(m=>({m}));
 }
+function howTo(spec, instrument){
+  if(instrument) return ['Tap <b>Listen</b> and allow the microphone if asked.','Play the note shown in large letters, one clean note at a time, and let it ring. Any octave counts.','When the needle sits in the green band for a moment, the next note appears.','Can\'t get it to register? Tap <b>Got it</b> to mark it yourself, or <b>Skip</b>.'];
+  const steps={
+    match:['Tap <b>Listen</b> and allow the microphone if asked. The app then plays a note through the speaker.','Listen to the whole note. While it plays, the app ignores the microphone.','Sing that same note back on "ah" (or hum it first if that is easier) at a comfortable talking volume. You do not need to know the note name in large letters; it is only a label.','Watch the needle: left means you are too low (flat), right means too high (sharp). Slide your voice until it sits in the green band.','Hold it there for about half a second. The note turns green, and the next note plays automatically.','Lost the note? Tap <b>Play note</b> to hear it again. Tap <b>Skip</b> if you are stuck.'],
+    hold:['Tap <b>Listen</b>. The app plays a note.','Sing it back and keep it steady. The bar under the needle fills while you are in the green band and drains if you drift.','The trace below shows the last five seconds: a flat line inside the shaded band is the goal.'],
+    interval:['Tap <b>Listen</b>. The app plays a starting note (the root).','Sing the note that is the named interval <i>above</i> it, for example a perfect 5th above. Use the song anchors in the unit to find the sound.','Hold it in the green band for half a second to move on.','Tap <b>Answer</b> to hear the target note if you cannot find it.'],
+    seq:['Tap <b>Hear it all</b> to listen to the whole pattern first.','Tap <b>Listen</b>, then sing the notes one at a time. The highlighted chip is the current note.','Hold each note in the green band for half a second and the next one lights up.','Tap <b>Play note</b> to hear just the current note.']};
+  return steps[spec.kind]||steps.seq;
+}
 function trainerLabel(spec){ return spec.label || (spec.kind==='match'?'Pitch matching':spec.kind==='range'?'Range finder':'Trainer'); }
 
 function mountTrainer(el, spec, {instrument=false, unitId=null}={}){
@@ -1160,7 +1182,8 @@ function mountTrainer(el, spec, {instrument=false, unitId=null}={}){
   el.innerHTML = `<div class="trainer">
     <div class="tr-head"><div><div class="tr-label">${esc(trainerLabel(spec))}</div><div class="tr-sub" data-r="sub"></div></div>
       <div class="tr-actions"><button class="btn" data-r="listen">Listen</button><button class="btn ghost" data-r="ref">► ${isIv?'Play root':'Play note'}</button>${isIv?'<button class="btn ghost" data-r="ans">► Answer</button>':''}${(!instrument&&!autoRef)?'<button class="btn ghost" data-r="all">► Hear it all</button>':''}</div></div>
-    ${micRowHTML}
+    <details class="howto" ${S.bests['how_'+(instrument?'inst':spec.kind)]?'':'open'}><summary>How this exercise works</summary><ol>${howTo(spec,instrument).map(x=>`<li>${x}</li>`).join('')}</ol></details>
+    ${micRowHTML}${sensControlHTML()}
     <div class="tr-target" data-r="target">–</div>
     <div class="meter"><div class="meter-zone"></div><div class="meter-needle" data-r="needle"></div><div class="meter-ticks"><span>flat</span><span>in tune</span><span>sharp</span></div></div>
     <div class="holdbar"><i data-r="hold"></i></div>
@@ -1169,6 +1192,8 @@ function mountTrainer(el, spec, {instrument=false, unitId=null}={}){
     <div class="tr-foot"><button class="btn ghost sm" data-r="skip">Skip</button><button class="btn ghost sm" data-r="self">Got it ✓ (self-check)</button><button class="btn ghost sm" data-r="restart">Restart</button></div>
     <div class="tr-msg" data-r="msg">Tap Listen, then ${instrument?'play':'sing'} the note${isHold?` and hold it for ${spec.seconds} seconds`:''}.</div></div>`;
   const R = k=>el.querySelector(`[data-r="${k}"]`);
+  wireSens(el);
+  const hk='how_'+(instrument?'inst':spec.kind); if(!S.bests[hk]){ S.bests[hk]=1; save(); }
   const cv=R('cv'), ctx=cv.getContext('2d'); const col={good:cssVar('--good')||'#2f7d4a', ink:cssVar('--ink')||'#222', band:cssVar('--goodbg')||'#e5f2e8', line:cssVar('--line')||'#ddd'};
   const targetLabel = t => isIv ? `${INTERVAL_NAMES[t.iv]} above ${midiName(t.root)}` : (t.name ? t.name : midiName(t.m));
   function playRef(){ const t=targets[idx]; if(!t) return; ac(); if(isIv) playNote(t.root,1.3); else if(t.pc!==undefined) playNote(60+t.pc,1.1); else playNote(t.m,1.1); }
@@ -1222,7 +1247,8 @@ function mountTrainer(el, spec, {instrument=false, unitId=null}={}){
       }
       if(good){ hold+=dt; cents.push(Math.abs(diff*100)); if(hold>=holdMs){ const tg=R('target'); tg.classList.add('flash'); setTimeout(()=>tg.classList.remove('flash'),300); advance(true); } }
       else hold=Math.max(0, hold-dt*(isHold?1.5:0.5));
-    } else if(!st.deaf) hold=Math.max(0, hold-dt*(isHold?0.4:1));
+    } else if(!st.deaf){ hold=Math.max(0, hold-dt*(isHold?0.4:1));
+      if(st.level>0.25 && st.clarity<0.6 && now-(owner.qt||0)>2500){ owner.qt=now; R('msg').textContent='Hearing sound but no clear note: sing a steady vowel ("ah"), not breathy.'; } }
     R('hold').style.width=Math.min(100,hold/holdMs*100)+'%';
     trace.push({t:now, d:diff}); drawTrace(now);
     if(!finished) loopRAF=requestAnimationFrame(frame);
@@ -1273,9 +1299,9 @@ function mountRange(el){
 function mountTuner(c){
   const STR=[[40,'low E'],[45,'A'],[50,'D'],[55,'G'],[59,'B'],[64,'high E']];
   c.innerHTML=`<h2>Tuner and pitch meter</h2><p class="small">Play one guitar string, or sing a note. For guitar it shows the nearest string and which way to turn.</p>
-    <div class="tr-actions"><button class="btn" data-r="listen">Listen</button></div>${micRowHTML}<div class="tr-target" data-r="n">–</div>
+    <div class="tr-actions"><button class="btn" data-r="listen">Listen</button></div>${micRowHTML}${sensControlHTML()}<div class="tr-target" data-r="n">–</div>
     <div class="meter"><div class="meter-zone"></div><div class="meter-needle" data-r="needle"></div><div class="meter-ticks"><span>flat</span><span>in tune</span><span>sharp</span></div></div><div class="tr-heard" data-r="hz"></div><div class="tr-msg" data-r="msg"></div>`;
-  const R=k=>c.querySelector(`[data-r="${k}"]`);
+  const R=k=>c.querySelector(`[data-r="${k}"]`); wireSens(c);
   simpleMicLoop(c, R, st=>{ if(st.midi==null) return; const n=Math.round(st.midi), cents=Math.round((st.midi-n)*100);
     R('n').textContent=midiName(n); R('needle').style.left=(50+cents)+'%'; R('needle').classList.toggle('good',Math.abs(cents)<8);
     const near=STR.slice().sort((a,b)=>Math.abs(a[0]-st.midi)-Math.abs(b[0]-st.midi))[0]; const d=st.midi-near[0];
@@ -1283,14 +1309,14 @@ function mountTuner(c){
 }
 function mountMicCheck(c){
   c.innerHTML=`<h2>Microphone check</h2><p class="small">Tap Listen and make a steady sound. If the level bar moves and a note appears, pitch checking will work. If not, tap Copy report and send it to Claude.</p>
-    <div class="tr-actions"><button class="btn" data-r="listen">Listen</button><button class="btn ghost" data-r="re">Restart microphone</button><button class="btn ghost" data-r="copy">Copy report</button></div>${micRowHTML}
+    <div class="tr-actions"><button class="btn" data-r="listen">Listen</button><button class="btn ghost" data-r="re">Restart microphone</button><button class="btn ghost" data-r="copy">Copy report</button></div>${micRowHTML}${sensControlHTML()}
     <pre class="report" data-r="rep">Not started.</pre><div class="tr-msg" data-r="msg"></div>`;
-  const R=k=>c.querySelector(`[data-r="${k}"]`); let perm='unknown', maxLevel=0, heard=0;
+  const R=k=>c.querySelector(`[data-r="${k}"]`); wireSens(c); let perm='unknown', maxLevel=0, heard=0;
   try{ navigator.permissions.query({name:'microphone'}).then(p=>perm=p.state).catch(()=>{}); }catch(e){}
   const report=st=>{ let tr={}, lab=''; try{ const t=Mic.stream.getAudioTracks()[0]; tr=t.getSettings?t.getSettings():{}; lab=t.label; }catch(e){}
     if(st){ maxLevel=Math.max(maxLevel,st.rms); if(st.midi!=null) heard++; }
     return [`${BUILD}`,`Page: ${location.hostname||'file'} · secure: ${window.isSecureContext}`,`Permission: ${perm}`,`Input: ${lab||'?'} · ${tr.sampleRate||'?'} Hz · echoCancel ${tr.echoCancellation} · autoGain ${tr.autoGainControl}`,
-      `Audio engine: ${AC?AC.state:'none'} · ${AC?AC.sampleRate:'?'} Hz · rebuilt ${Mic.rebuilds}×`,
+      `Sensitivity: ${S.settings.sens} · voice boost ${S.settings.boost!==false}`,`Audio engine: ${AC?AC.state:'none'} · ${AC?AC.sampleRate:'?'} Hz · rebuilt ${Mic.rebuilds}×`,
       st?`Level now: ${st.rms>0?(20*Math.log10(st.rms)).toFixed(0):'-inf'} dB · loudest: ${maxLevel>0?(20*Math.log10(maxLevel)).toFixed(0):'-inf'} dB · silent: ${st.silent}`:'',
       st?`Clarity: ${st.clarity.toFixed(2)} · note: ${st.midi!=null?midiName(Math.round(st.midi))+' ('+st.freq.toFixed(1)+' Hz)':'none'} · frames with a note: ${heard}`:''].filter(Boolean).join('\n'); };
   simpleMicLoop(c, R, st=>{ R('rep').textContent=report(st); });
@@ -1735,6 +1761,8 @@ function progressView(){
     </tbody></table></section>
     <section class="card"><h2>Recent sessions</h2>${S.sessions.length?`<ul class="sesslist">${S.sessions.slice(-10).reverse().map(s=>`<li>${new Date(s.date).toLocaleDateString()} · ${s.minutes} min · ${esc((unitById(s.unit)||{}).title||'')}</li>`).join('')}</ul>`:'<p class="small">None yet.</p>'}</section>
     <section class="card"><h2>Settings</h2><div class="row">${rangeSel('low','Lowest note',S.range.low)} ${rangeSel('high','Highest note',S.range.high)}</div>
+      ${sensControlHTML()}
+      <label class="chk block"><input type="checkbox" data-r="boost" ${S.settings.boost!==false?'checked':''}> Voice boost (lets the iPad raise the microphone level for quiet singing; turn off if the piano sounds distorted to the app)</label>
       <label class="chk block"><input type="checkbox" data-r="hp" ${S.settings.headphones?'checked':''}> I am using headphones (keep pitch checking on while the app plays sound)</label>
       <div class="row"><button class="btn ghost sm" data-r="replace">Redo placement</button></div></section>
     <section class="card"><h2>Backup</h2><p class="small">${cloudOK?'Progress syncs to your Claude account while you use the app inside Claude.':'Progress is saved in this browser on this device.'} A backup code moves progress between the Claude copy and the hosted copy, and protects against Safari clearing site data.</p>
@@ -1744,6 +1772,7 @@ function progressView(){
   const R=k=>wrap.querySelector(`[data-r="${k}"]`);
   wrap.querySelectorAll('[data-range]').forEach(s=>s.onchange=()=>{ S.range[s.dataset.range]=+s.value; save(); });
   R('hp').onchange=e=>{ S.settings.headphones=e.target.checked; save(); };
+  wireSens(wrap); R('boost').onchange=e=>{ S.settings.boost=e.target.checked; save(); Mic.stop(); };
   R('replace').onclick=()=>{ S.placed=false; save(); render(); };
   R('copy').onclick=async()=>{ const code=btoa(unescape(encodeURIComponent(JSON.stringify(S)))); try{ await navigator.clipboard.writeText(code); R('msg').textContent='Copied.'; }catch(e){ R('ta').hidden=false; R('ta').value=code; R('ta').select(); R('msg').textContent='Clipboard blocked: the code is in the box; select and copy it.'; } };
   R('imp').onclick=()=>{ const ta=R('ta'); if(ta.hidden){ ta.hidden=false; ta.value=''; ta.focus(); R('msg').textContent='Paste the code, then tap Restore again.'; return; }
