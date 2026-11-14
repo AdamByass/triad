@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Triad: guitar, piano and voice</title>
+<meta name="apple-mobile-web-app-title" content="Triad">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -93,7 +96,7 @@ details summary{cursor:pointer;list-style:none}details summary::-webkit-details-
 .unitrow{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;width:100%;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);padding:14px 10px;font:500 16px Inter,sans-serif;text-align:left;cursor:pointer;min-height:54px}
 .un{font:650 18px Fraunces,serif;color:var(--mute)}.us{font-size:13px;color:var(--acc);font-weight:600}
 .unitrow.cur{background:var(--acc2);border-radius:10px}.unitrow.done .un{color:var(--good)}
-.toolgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.toolgrid{display:grid;gap:10px}
 .tool{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:18px 12px;font:600 15px Inter,sans-serif;cursor:pointer;min-height:64px}
 .tool.on{border-color:var(--acc);background:var(--acc2)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stats div{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column}
@@ -104,6 +107,32 @@ textarea{width:100%;font:13px ui-monospace,monospace;border:1px solid var(--line
 .placement .pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
 .plq{border:1px solid var(--line);border-radius:12px;padding:12px}.pl-l{font-weight:600;margin-bottom:6px}
 .radio{display:flex;gap:8px;align-items:center;padding:7px 0;font-size:15px;cursor:pointer}.radio input{width:20px;height:20px;accent-color:var(--acc)}
+
+.microw{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--mute)}
+.lvl{flex:0 0 120px;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.lvl i{display:block;height:100%;width:0;background:var(--acc);transition:width .06s linear}
+.holdbar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}.holdbar i{display:block;height:100%;width:0;background:var(--good)}
+canvas.trace{width:100%;height:96px;border:1px solid var(--line);border-radius:10px;display:block}
+.tr-actions{flex-wrap:wrap}
+.report{font:12.5px/1.5 ui-monospace,Menlo,monospace;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px;white-space:pre-wrap;margin:10px 0}
+.diag{margin:10px 0 14px}.diag figcaption{font-size:13.5px;color:var(--mute);margin-bottom:6px}
+.diag .ksvg{max-width:520px}.fsvg{width:100%;max-width:560px;height:auto;color:var(--ink)}
+.fsvg .fl{font:11px Inter,sans-serif;fill:var(--mute)}.fsvg .fn{fill:var(--card);stroke:var(--acc);stroke-width:1.5}.fsvg .fr{fill:var(--acc)}
+.fsvg .ft{font:600 9.5px Inter,sans-serif;fill:var(--ink)}.fsvg .ft.r{fill:#fff}
+.ksvg.play rect{cursor:pointer}.ksvg.play{touch-action:none;max-width:640px}
+.rgrid{display:grid;gap:3px;margin:10px 0}
+.rc{display:flex;flex-direction:column;align-items:center;padding:8px 0;border-radius:8px;background:var(--paper);border:1px solid transparent;min-width:0}
+.rc.b{border-left:2px solid var(--line)}.rc .ra{font:650 22px Fraunces,serif;color:var(--line);line-height:1.1}.rc.act .ra{color:var(--ink)}
+.rc .rl{font-size:12px;color:var(--mute)}.rc.now{background:var(--acc2);border-color:var(--acc)}.rc.now.act .ra{color:var(--acc)}
+.tappad{width:100%;min-height:120px;border-radius:16px;border:2px solid var(--acc);background:var(--acc2);color:var(--acc);font:650 24px Fraunces,serif;touch-action:manipulation;-webkit-user-select:none;user-select:none;cursor:pointer}
+.tappad.hit{background:var(--acc);color:#fff}
+.strip{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.sc{min-width:58px;text-align:center;padding:10px 8px;border:1px solid var(--line);border-radius:10px;font:650 17px Fraunces,serif}
+.sc.now{background:var(--acc);color:#fff;border-color:var(--acc)}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:14.5px;color:var(--mute);min-height:40px}.chk input{width:20px;height:20px;accent-color:var(--acc)}.chk.block{display:flex;margin:8px 0}
+.stats.two{grid-template-columns:1fr 1fr;margin-bottom:10px}.rt.left td{text-align:left}.rt.left td:last-child{text-align:right;white-space:nowrap}
+.tr-msg a{color:var(--acc)}.tr-msg .btn{margin-left:8px}
+.toolgrid{grid-template-columns:repeat(4,1fr)}
+@media (max-width:640px){.toolgrid{grid-template-columns:1fr 1fr}.rc .ra{font-size:16px}}
 @media (max-width:640px){.strandbar{grid-template-columns:repeat(3,1fr)}.times{grid-template-columns:repeat(3,1fr)}.toolgrid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.placement .pl-grid{grid-template-columns:1fr}.opts.col{grid-template-columns:1fr}nav.tabs button{padding:8px 10px}.hwrap{flex-wrap:wrap}}
 </style>
 </head>
@@ -138,16 +167,16 @@ function majorScale(root){ return MAJOR_STEPS.map((s,i)=>spell(root,s,i)); }
 const CHORD_FORMULAS = { // [semis, letter steps]
   maj:[[0,0],[4,2],[7,4]], min:[[0,0],[3,2],[7,4]], dim:[[0,0],[3,2],[6,4]],
   dom7:[[0,0],[4,2],[7,4],[10,6]], maj7:[[0,0],[4,2],[7,4],[11,6]], min7:[[0,0],[3,2],[7,4],[10,6]],
-  five:[[0,0],[7,4]], sus4:[[0,0],[5,3],[7,4]]
+  five:[[0,0],[7,4]], sus4:[[0,0],[5,3],[7,4]], sus2:[[0,0],[2,1],[7,4]], add9:[[0,0],[4,2],[7,4],[14,8]]
 };
-const QUALITY_SUFFIX = {maj:'',min:'m',dim:'°',dom7:'7',maj7:'maj7',min7:'m7',five:'5',sus4:'sus4'};
+const QUALITY_SUFFIX = {maj:'',min:'m',dim:'°',dom7:'7',maj7:'maj7',min7:'m7',five:'5',sus4:'sus4',sus2:'sus2',add9:'add9'};
 const QUALITY_NAME = {maj:'major',min:'minor',dim:'diminished',dom7:'dominant 7th',maj7:'major 7th',min7:'minor 7th'};
 function chordNotes(root, q){ return CHORD_FORMULAS[q].map(([s,l])=>spell(root,s,l)); }
 function parseChord(name){
-  const m = name.match(/^([A-G][#b]?)(maj7|m7|m|7|5|sus4|°|dim)?/);
+  const m = name.match(/^([A-G][#b]?)(maj7|m7|m|7|5|sus4|sus2|add9|°|dim)?(?:\/([A-G][#b]?))?/);
   if(!m) return null;
-  const q = {undefined:'maj','m':'min','7':'dom7','maj7':'maj7','m7':'min7','5':'five','sus4':'sus4','°':'dim','dim':'dim'}[m[2]];
-  return {root:m[1], q};
+  const q = {undefined:'maj','m':'min','7':'dom7','maj7':'maj7','m7':'min7','5':'five','sus4':'sus4','sus2':'sus2','add9':'add9','°':'dim','dim':'dim'}[m[2]];
+  return {root:m[1], q, bass:m[3]||null};
 }
 const DIATONIC_Q = ['maj','min','min','maj','maj','min','dim'];
 const ROMAN = ['I','ii','iii','IV','V','vi','vii°'];
@@ -225,6 +254,47 @@ const QUIZ = {
       ['In the pattern D · D U · U D U, which beat has no strum at all?','3',['1','2','4']]];
     const [q,a,o]=rnd(bank); return mc(q,a,o); }
 };
+
+Object.assign(QUIZ, {
+  barre(){ const shape=rnd(['E','Em','A','Am']); const f=1+Math.floor(Math.random()*8); const ans=transposeChord(shape,f);
+    const other={E:'A',Em:'Am',A:'E',Am:'Em'}[shape];
+    return mc(`A barre chord using the ${shape} shape, with the barre at fret ${f}, is…`, ans, [transposeChord(shape,f-1),transposeChord(shape,f+1),transposeChord(shape,f+2),transposeChord(other,f)]); },
+  fretnote(){ const s=rnd([['low E',4],['A',9]]); const f=1+Math.floor(Math.random()*10);
+    return mc(`Which note is at fret ${f} on the ${s[0]} string?`, enh(SHARP[mod(s[1]+f,12)]), SHARP.map(enh)); },
+  sus(){ const r=rnd(['D','A','E','G','C']); const q=rnd(['sus4','sus2']);
+    if(Math.random()<0.25) return mc(`A ${q} chord replaces the 3rd with the…`, q==='sus4'?'4th':'2nd', ['4th','2nd','6th','7th']);
+    return mc(`Which notes make ${r}${q}?`, fmtNotes(chordNotes(r,q)), [fmtNotes(chordNotes(r,'maj')),fmtNotes(chordNotes(r,'min')),fmtNotes(chordNotes(r,q==='sus4'?'sus2':'sus4'))]); },
+  slash(){ const r=rnd(['C','G','D','F','A']); const n=chordNotes(r,'maj');
+    if(Math.random()<0.3) return mc(`In the chord ${r}/${n[1]}, what does the letter after the slash mean?`, 'The lowest (bass) note', ['The lowest (bass) note','The highest note','A note to leave out','The key of the song']);
+    const which=rnd([1,2]);
+    return mc(`Which chord is ${r} major with its ${which===1?'3rd':'5th'} in the bass?`, `${r}/${n[which]}`, [`${r}/${n[which===1?2:1]}`,`${n[which]}/${r}`,`${r}/${spell(r,5,3)}`,`${r}/${spell(r,2,1)}`]); },
+  sixteenth(){ const bank=[
+      ['How many sixteenth notes fit in one beat?','4',['2','3','8']],
+      ['How many sixteenth notes fit in a bar of 4/4?','16',['8','12','32']],
+      ['How are sixteenth notes counted?','1 e & a',['1 & 2 &','1 trip-let','1 2 3 4']],
+      ['In sixteenth-note strumming, the hand moves DOWN on…','the numbers and the "&"s',['the numbers only','the "e"s and "a"s','every sixteenth']],
+      ['Syncopation means…','accenting notes that fall off the main beats',['playing faster','playing every beat equally','changing key']],
+      ['The backbeat is on beats…','2 and 4',['1 and 3','1 only','3 only']],
+      ['A 3+3+2 grouping over eight eighth notes puts accents on…','1, the "&" of 2, and 4',['1, 2, 3 and 4','1 and 3','the "&" of every beat']]];
+    const [q,a,o]=rnd(bank); return mc(q,a,o); },
+  circle(){ const order=['Eb','Bb','F','C','G','D','A','E','B']; const i=1+Math.floor(Math.random()*7); const cw=Math.random()<.6;
+    return mc(`On the circle of fifths, which key is one step ${cw?'clockwise (a 5th up)':'anticlockwise (a 5th down)'} from ${order[i]}?`, order[cw?i+1:i-1], order); },
+  secdom(){ const k=rnd(['C','G','D','F','A']); const sc=majorScale(k), dc=diatonicChords(k); const deg=rnd([1,4,5]);
+    const sd=d=>spell(sc[d],7,4)+'7';
+    return mc(`In ${k} major, which chord is the secondary dominant that leads to ${dc[deg]}?`, sd(deg), [sd(1),sd(4),sd(5),sc[4]+'7',sc[deg]+'7',sc[0]+'7']); },
+  modes(){ const t=rnd([0,1,2]);
+    if(t===0){ const k=rnd(['C','G','D','A','E']); const sc=majorScale(k);
+      return mc(`What is the ♭VII chord in the key of ${k}?`, transposeChord(k,-2), [sc[6]+'°',sc[3],sc[4],transposeChord(k,-1),sc[5]+'m']); }
+    if(t===1){ const k=rnd(['G','D','A','E','C']); const sc=majorScale(k);
+      return mc(`${k} Mixolydian is ${k} major with which change?`, `${sc[6]} lowered to ${spell(k,10,6)}`, [`${sc[2]} lowered to ${spell(k,3,2)}`,`${sc[3]} raised to ${spell(k,6,3)}`,`${sc[5]} lowered to ${spell(k,8,5)}`]); }
+    const r=rnd(['A','D','E']);
+    return mc(`${r} Dorian is ${r} natural minor with which change?`, `6th raised: ${spell(r,8,5)} becomes ${spell(r,9,5)}`, [`7th raised: ${spell(r,10,6)} becomes ${spell(r,11,6)}`,`2nd lowered: ${spell(r,2,1)} becomes ${spell(r,1,1)}`,`3rd raised: ${spell(r,3,2)} becomes ${spell(r,4,2)}`]); },
+  borrowed(){ const k=rnd(['C','G','D','A','E']); const sc=majorScale(k);
+    if(Math.random()<.5) return mc(`In ${k} major, which chord is the borrowed minor iv?`, sc[3]+'m', [sc[3],sc[1]+'m',sc[4]+'m',sc[5]+'m']);
+    return mc(`In ${k} major, which chord is the borrowed ♭VI?`, transposeChord(k,8), [sc[5]+'m',transposeChord(k,10),sc[3],transposeChord(k,3)]); },
+  harmony(){ const k=rnd(['C','G','D','F']); const sc=majorScale(k); const i=Math.floor(Math.random()*7); const below=Math.random()<.35;
+    return mc(`In ${k} major, which note harmonises ${sc[i]} a diatonic ${below?'6th below':'3rd above'}?`, sc[(i+2)%7], sc); }
+});
 
 // ===== CURRICULUM =====
 // Each unit: one concept, worked across theory, guitar, piano, voice, songs.
@@ -365,7 +435,7 @@ const CURRICULUM = [
   voice:{core:'Sing 1-3-5-3-1 in major, then the same in minor, with the trainer. Feel the 3rd drop. Then just listen: the ear trainer plays chords and you call major or minor.',
          stretch:'Sing the root, 3rd and 5th of a chord you are playing, one after another, without the reference.'},
   voiceTrainers:[{kind:'seq',label:'Major then minor arpeggio',fit:true,rel:[0,4,7,4,0,3,7,3,0]}],
-  pianoTrainers:[{kind:'seq',label:'C major vs C minor, A minor vs A major',pcs:['C','E','G','C','D#','G','A','C','E','A','C#','E']}],
+  pianoTrainers:[{kind:'seq',label:'C major vs C minor, A minor vs A major',pcs:['C','E','G','C','Eb','G','A','C','E','A','C#','E']}],
   guitarTrainers:[],
   quiz:['triad','triad_quality'], ear:{qualities:['maj','min']}, earLabel:'Major or minor chord?',
   songs:[
@@ -436,8 +506,8 @@ const CURRICULUM = [
   voice:{core:'Sing the blues scale up and down with the trainer. Then sing the root of each bar through a full 12-bar as you play it: it locks the form into your ear.',
          stretch:'Call-and-response blues: sing a short phrase in bars 1–2, answer it on guitar or piano in bars 3–4.'},
   voiceTrainers:[{kind:'seq',label:'Blues scale',fit:true,rel:[0,3,5,6,7,10,12,10,7,6,5,3,0]},{kind:'seq',label:'12-bar roots',fit:true,rel:[0,0,5,0,7,5,0,7]}],
-  pianoTrainers:[{kind:'seq',label:'A blues scale',pcs:['A','C','D','D#','E','G','A']},{kind:'seq',label:'Boogie bass in A',pcs:['A','C#','E','F#','G','F#','E','C#']}],
-  guitarTrainers:[{kind:'seq',label:'A blues scale',pcs:['A','C','D','D#','E','G','A']}],
+  pianoTrainers:[{kind:'seq',label:'A blues scale',pcs:['A','C','D','Eb','E','G','A']},{kind:'seq',label:'Boogie bass in A',pcs:['A','C#','E','F#','G','F#','E','C#']}],
+  guitarTrainers:[{kind:'seq',label:'A blues scale',pcs:['A','C','D','Eb','E','G','A']}],
   quiz:['twelvebar','seventh_dom'], ear:{qualities:['maj','min','dom7']}, earLabel:'Major, minor or dominant 7th?',
   songs:[
     {t:'Johnny B. Goode',a:'Chuck Berry',g:"Rock 'n' roll",prog:'12-bar blues',use:'Guitar: the shuffle riff drives the whole song. Voice: fast storytelling over the form.'},
@@ -512,7 +582,7 @@ const CURRICULUM = [
   songs:[
     {t:'Hallelujah',a:'Leonard Cohen / Jeff Buckley',g:'Folk / ballad',prog:'C–Am–C–Am–F–G–C–G in 12/8; the lyric describes the chords',use:'Guitar fingerpicked or piano broken chords while singing. Map verse vs chorus.'},
     {t:'Take Me Home, Country Roads',a:'John Denver',g:'Country / folk',prog:'I–vi–V–IV verse, I–V–vi–IV chorus (G Em D C / G D Em C)',use:'Guitar + voice: the full sing-and-strum song.'},
-    {t:'Hey Jude',a:'The Beatles',g:'Pop / rock',prog:'I–V–V7–I, I–IV–I–V; long ♭VII–IV–I coda',use:'Piano: the classic accompaniment. Voice: a long song; pacing and stamina.'},
+    {t:'Hey Jude',a:'The Beatles',g:'Pop / rock',prog:'Verse I–V–V7–I then IV–I–V–I (F C C7 F, Bb F C F); long I–♭VII–IV–I coda',use:'Piano: the classic accompaniment. Voice: a long song; pacing and stamina.'},
     {t:'Three Little Birds',a:'Bob Marley',g:'Reggae',prog:'I–IV–V (A D E)',use:'Guitar: reggae off-beat "skank" (strum only on the &s). Voice: relaxed, easy range.'}
   ]
 }
@@ -536,19 +606,419 @@ const GUITAR_SHAPES = {
   'Dsus4':[-1,-1,0,2,3,3],'E5':[0,2,2,-1,-1,-1],'A5':[-1,0,2,2,-1,-1],'D5':[-1,-1,0,2,3,-1],'G5':[3,5,5,-1,-1,-1]
 };
 
+// ===== CURRICULUM PART 2: rhythm patterns, backing loops, diagrams, voice technique, Stage 4 =====
+const RHYTHMS = {
+  quarters:{label:'Quarter notes: one per beat',beats:4,spb:1,slots:[1,1,1,1],bpm:60},
+  eighths:{label:'Eighth notes: down-up, all eight',beats:4,spb:2,slots:[1,1,1,1,1,1,1,1],bpm:60},
+  ddu:{label:'D · D U D · D U',beats:4,spb:2,slots:[1,0,1,1,1,0,1,1],bpm:66},
+  main:{label:'D · D U · U D U (the workhorse)',beats:4,spb:2,slots:[1,0,1,1,0,1,1,1],bpm:70},
+  waltz:{label:'Waltz: D · D U D U',beats:3,spb:2,slots:[1,0,1,1,1,1],bpm:80},
+  shuffle:{label:'Shuffle: swung eighths',beats:4,spb:2,slots:[1,1,1,1,1,1,1,1],swing:true,bpm:80},
+  offbeat:{label:'Reggae skank: only the "&"s',beats:4,spb:2,slots:[0,1,0,1,0,1,0,1],bpm:72},
+  sixteen:{label:'Straight sixteenths',beats:4,spb:4,slots:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],bpm:50},
+  sync16:{label:'Sixteenth groove',beats:4,spb:4,slots:[1,0,1,1,0,1,1,1,1,0,1,1,0,1,1,1],bpm:50},
+  tresillo:{label:'3 + 3 + 2',beats:4,spb:2,slots:[1,0,0,1,0,0,1,0],bpm:80,strum:false},
+  backbeat:{label:'Backbeat: 2 and 4',beats:4,spb:1,slots:[0,1,0,1],bpm:80,strum:false}
+};
+const WARMUP = ['Breath: in through the nose for 4, out on a steady "sss" for 12. Twice.',
+  'Siren: slide on a lip trill or "ng" from your lowest easy note to your highest and back. Three times, no pushing.',
+  'Hum a five-note scale up and down in the middle of your range, then open it to "ah".'];
+
+const EXTRAS = {
+u1:{ rhythm:['quarters'],
+  loops:[{label:'Em – D',chords:['Em','D'],bpm:66}],
+  kbd:{label:'C five-finger position, right hand',midis:[60,62,64,65,67],fingers:[1,2,3,4,5]},
+  fretboard:{label:'Natural notes on the two lowest strings',pcs:['C','D','E','F','G','A','B'],root:'C',from:0,to:8,strings:[0,1]},
+  voiceTech:'Posture and breath. Stand or sit tall with loose shoulders. Breathe low: the belly and lower ribs move out, the shoulders stay down. Sing at speaking volume. Pitch accuracy does not need loudness, and pushing makes it worse.',
+  voiceTrainers:[{kind:'match',count:8},{kind:'hold',label:'Hold a note steady (4 s)',seconds:4,count:3},{kind:'seq',label:'Frère Jacques',fit:true,midi:[60,62,64,60,64,65,67,67,69,67,65,64,60,60,55,60]}]},
+u2:{ rhythm:['eighths'],
+  loops:[{label:'G – C – D – G',chords:['G','C','D','G'],bpm:66}],
+  kbd:{label:'C major scale, right hand (thumb tucks under after 3)',midis:[60,62,64,65,67,69,71,72],fingers:[1,2,3,1,2,3,4,5]},
+  fretboard:{label:'G major scale, open position (frets 2–5)',pcs:['G','A','B','C','D','E','F#'],root:'G',from:2,to:5},
+  voiceTech:'Sirens. Slide on "ng" (as in "sing") or a lip trill from low to high and back, slowly. The aim is one smooth line. Where the voice cracks or flips is your register break; note where it is, do not fight it.'},
+u3:{ rhythm:['ddu'],
+  loops:[{label:'G – C – D – C (I–IV–V–IV)',chords:['G','C','D','C'],bpm:72,per:2},{label:'A – D – E – D',chords:['A','D','E','D'],bpm:72,per:2},{label:'C – F – G – F (La Bamba)',chords:['C','F','G','F'],bpm:80,per:2}],
+  voiceTech:'Steady air. Hiss "sss" evenly for 15–20 seconds, then sustain one sung note with the same even flow. Running out early means you took a shallow breath or let air leak at the start of the note.'},
+u4:{ rhythm:['main','waltz'],
+  loops:[{label:'G – C – G – D in 4/4',chords:['G','C','G','D'],bpm:72},{label:'Waltz: C – F – G – C in 3/4',chords:['C','F','G','C'],bpm:84,beats:3}],
+  voiceTech:'Clean onsets. Start each note on the beat without a breathy "h" in front and without a hard click in the throat. Practise "ah, ah, ah" on one note in time with the metronome.'},
+u5:{ rhythm:['eighths'],
+  loops:[{label:'E5 – G5 – A5 – E5',chords:['E5','G5','A5','E5'],bpm:84},{label:'G5 – A5 – C5 (two beats each)',chords:['G5','A5','C5','A5'],bpm:88,per:2}],
+  fretboard:{label:'Power-chord roots on the low E and A strings',pcs:['C','D','E','F','G','A','B'],root:'G',from:0,to:8,strings:[0,1]},
+  voiceTech:'Hear it first. Before singing an interval, imagine the target note for a second, then land on it directly. Sliding up into the note ("scooping") hides whether you actually knew where it was.'},
+u6:{ rhythm:['main'],
+  loops:[{label:'Am – C – G – Am (Jolene)',chords:['Am','C','G','Am'],bpm:96,per:2},{label:'Em – C – G – D',chords:['Em','C','G','D'],bpm:80},{label:'A – F#m – D – E (Stand By Me)',chords:['A','F#m','D','E'],bpm:84}],
+  voiceTech:'Vowels carry the pitch. Sing a phrase on its vowels only, jaw loose. Then hold one note through "ah – eh – ee – oh – oo" without the pitch or volume changing; "ee" and "oo" tend to drift sharp.'},
+u7:{ rhythm:['main'],
+  loops:[{label:'C – G – Am – F (I–V–vi–IV)',chords:['C','G','Am','F'],bpm:76},{label:'G – D – Em – C',chords:['G','D','Em','C'],bpm:80},{label:'Am – F – C – G (vi–IV–I–V)',chords:['Am','F','C','G'],bpm:76},{label:'C – Am – F – G (I–vi–IV–V)',chords:['C','Am','F','G'],bpm:84}],
+  voiceTech:'Registers. Chest voice is your speaking-range sound; head voice (or falsetto) is the lighter sound above the break. Siren through the break daily. Do not drag chest voice upward by getting louder; let it flip, and the join strengthens over weeks.'},
+u8:{ rhythm:['main'],
+  loops:[{label:'Am – G – F – G (improvise here)',chords:['Am','G','F','G'],bpm:84},{label:'Em – C – G – D',chords:['Em','C','G','D'],bpm:84},{label:'Am – C – D – F (Rising Sun, 3/4 feel)',chords:['Am','C','D','F'],bpm:92,beats:3}],
+  kbd:{label:'A natural minor, right hand',midis:[57,59,60,62,64,65,67,69],fingers:[1,2,3,1,2,3,4,5]},
+  fretboard:{label:'A minor pentatonic, box 1 (5th fret)',pcs:['A','C','D','E','G'],root:'A',from:5,to:8},
+  voiceTech:'Dynamics. Hold one note and go soft → loud → soft without the pitch moving. Most people go sharp as they get louder and flat as they fade; watch the trace while you do it.'},
+u9:{ rhythm:['shuffle'],
+  loops:[{label:'12-bar blues in A (shuffle)',chords:['A7','A7','A7','A7','D7','D7','A7','A7','E7','D7','A7','E7'],bpm:92,swing:true},{label:'12-bar blues in E (shuffle)',chords:['E7','E7','E7','E7','A7','A7','E7','E7','B7','A7','E7','B7'],bpm:92,swing:true}],
+  kbd:{label:'A blues scale',midis:[57,60,62,63,64,67,69]},
+  fretboard:{label:'A blues scale, box 1 (the ♭5 added)',pcs:['A','C','D','Eb','E','G'],root:'A',from:5,to:8},
+  voiceTech:'Bending on purpose. Slide deliberately from the minor 3rd up toward the major 3rd and back. A scoop you choose is style; a scoop you cannot avoid is a pitch problem. You should be able to do both versions of a phrase.'},
+u10:{ rhythm:['main'],
+  loops:[{label:'ii–V–I in C: Dm7 – G7 – Cmaj7',chords:['Dm7','G7','Cmaj7','Cmaj7'],bpm:88},{label:'Am7 – Em7 (Ain\'t No Sunshine)',chords:['Am7','Em7','G7','Am7'],bpm:76,per:2},{label:'Cmaj7 – Fmaj7',chords:['Cmaj7','Fmaj7'],bpm:72}],
+  voiceTech:'Sustain. Hold notes dead straight first; use the hold trainer. Vibrato arrives on its own once the breath is steady and the throat relaxed. Do not manufacture it by wobbling the jaw or pulsing the belly.',
+  voiceTrainers:[{kind:'seq',label:'Major 7 arpeggio',fit:true,rel:[0,4,7,11,7,4,0]},{kind:'seq',label:'Minor 7 arpeggio',fit:true,rel:[0,3,7,10,7,3,0]},{kind:'hold',label:'Hold a note steady (6 s)',seconds:6,count:3}]},
+u11:{ rhythm:['main'],
+  loops:[{label:'G – C – D – G',chords:['G','C','D','G'],bpm:80},{label:'Em7 – G – Dsus4 – A7 (Wonderwall shapes)',chords:['Em7','G','Dsus4','A7'],bpm:84,per:2}],
+  voiceTech:'Signs of the wrong key: chin lifting for high notes, neck tension, needing volume to reach a note. Transpose down rather than push. Drink water, and stop for the day if you go hoarse.'},
+u12:{ rhythm:['offbeat','main'],
+  loops:[{label:'C – Am – F – G',chords:['C','Am','F','G'],bpm:76},{label:'A – D – E (Three Little Birds)',chords:['A','A','D','A','A','E','D','A'],bpm:76},{label:'G – Em – D – C',chords:['G','Em','D','C'],bpm:80}],
+  voiceTech:'Phrasing. Decide where you breathe before you sing: ends of lines, never mid-word. Mark the breaths on the lyric sheet and take them even when you feel you do not need to.'}
+};
+
+const STAGE4 = [
+{
+  id:'u13', stage:'Stage 4 · Fluency', title:'Barre chords and movable shapes',
+  concept:`<p>A <b>barre chord</b> is an open chord shape moved up the neck, with your index finger laid flat across the strings acting as a movable nut.</p>
+  <p><b>E shape (root on the low E string).</b> Play an open E chord with fingers 2-3-4, slide it up one fret and barre fret 1 with the index: that is <b>F</b>. Fret 3 is G, fret 5 is A, fret 7 is B. Lift the middle finger (the Em shape) and each becomes minor: fret 2 is F#m, fret 3 is Gm.</p>
+  <p><b>A shape (root on the A string).</b> The same idea with the open A chord: barre at fret 2 is <b>B</b>, fret 3 is C, fret 5 is D. Using the Am shape gives Bm (fret 2) and Cm (fret 3).</p>
+  <p>So two shapes plus knowing the notes along the two lowest strings gives you every major and minor chord. On piano the equivalent is that a triad is the same structure in all 12 keys; only the mix of black and white keys changes.</p>`,
+  chords:['F (barre)','Bm','F#m','B','Gm','Cm'],
+  guitar:{core:'Build the F barre in stages: lay the index across fret 1, close to the fret wire and rolled slightly onto its bony edge, thumb behind the neck. Add the E shape with fingers 2-3-4. Pick each string one at a time and fix the dead ones. Then ten slow squeeze-and-release reps. Two minutes a day beats twenty once a week; this takes weeks to sound clean.',
+          stretch:'Bm and F#m, then timed changes: F ↔ C, Bm ↔ G, and the Creep loop G–B–C–Cm.'},
+  piano:{core:'Right hand: play the major triad on every one of the 12 notes, moving up by half steps from C, naming each chord aloud. Notice the families: all white (C F G), black in the middle (D E A), and so on.',
+         stretch:'The same with minor triads, then with both hands.'},
+  voice:{core:'Half steps are the hardest interval to sing accurately; most people sing them too wide. Sing the five-note chromatic pattern with the trainer, slowly, checking every note.',
+         stretch:'Hold test at 6 seconds, then sing the chromatic pattern without the reference note.'},
+  voiceTech:'Chromatic accuracy. Check half steps against the piano: play C, sing C#, then play C# to check. Keep the volume low so you can hear the difference between your note and the piano\'s.',
+  voiceTrainers:[{kind:'seq',label:'Chromatic five-note pattern',fit:true,rel:[0,1,2,3,4,3,2,1,0]},{kind:'hold',label:'Hold a note steady (6 s)',seconds:6,count:3}],
+  pianoTrainers:[{kind:'seq',label:'Roots moving up by half steps',pcs:['C','C#','D','Eb','E','F','F#','G']}],
+  guitarTrainers:[{kind:'seq',label:'Notes on the low E string, frets 1–8',pcs:['F','F#','G','G#','A','Bb','B','C']},{kind:'seq',label:'Notes on the A string, frets 1–8',pcs:['Bb','B','C','C#','D','Eb','E','F']}],
+  fretboard:{label:'Root notes for E-shape and A-shape barres',pcs:['C','D','E','F','G','A','B'],root:'F',from:0,to:8,strings:[0,1]},
+  rhythm:['main'],
+  loops:[{label:'G – B – C – Cm (Creep)',chords:['G','B','C','Cm'],bpm:92},{label:'Am – F – C – G',chords:['Am','F','C','G'],bpm:80},{label:'Bm – G – D – A',chords:['Bm','G','D','A'],bpm:84}],
+  quiz:['barre','fretnote'], ear:{qualities:['maj','min','dom7']}, earLabel:'Major, minor or dominant 7th?',
+  songs:[
+    {t:'Have You Ever Seen the Rain',a:'Creedence Clearwater Revival',g:'Country rock',prog:'C, G, F and Am',use:'Guitar: the F chord in a real song at a forgiving tempo. Voice: mid-range, strong chorus.'},
+    {t:"(Sittin' On) The Dock of the Bay",a:'Otis Redding',g:'Soul',prog:'G–B–C–A, all major (I–III–IV–II)',use:'Guitar: the B barre (A shape, fret 2). Theory: major chords that are not in the key.'},
+    {t:'Creep',a:'Radiohead',g:'Alt rock',prog:'G–B–C–Cm throughout',use:'Guitar: B and Cm barres, four bars each, so there is time to set up. Voice: quiet verse to a big chorus.'},
+    {t:'Hotel California',a:'Eagles',g:'Rock',prog:'Bm–F#–A–E–G–D–Em–F#',use:'Stretch. Guitar: barres in almost every bar. Piano: a long minor-key progression with left-hand roots.'}
+  ]
+},
+{
+  id:'u14', stage:'Stage 4 · Fluency', title:'Sus, add and slash chords',
+  concept:`<p>These are the small alterations that make plain chords sound like records.</p>
+  <p><b>Suspended chords</b> replace the 3rd. <b>sus4</b> uses the 4th instead (Dsus4 = D–G–A); <b>sus2</b> uses the 2nd (Dsus2 = D–E–A). With no 3rd they are neither major nor minor, and they pull back toward the plain chord. D → Dsus4 → D → Dsus2 is the most-used guitar embellishment there is.</p>
+  <p><b>add9</b> keeps the 3rd and adds the 9th (the 2nd, an octave up): Cadd9 = C–E–G–D. Richer, not tense.</p>
+  <p><b>Slash chords</b> name the bass note after the slash: <b>C/E</b> is a C chord with E as the lowest note. When the bass is the chord's 3rd it is called first inversion; the 5th in the bass is second inversion. Their main job is to make the bass line move by step: C – G/B – Am gives a bass of C, B, A. G – D/F# – Em gives G, F#, E.</p>`,
+  chords:['Dsus4','Dsus2','Asus4','Asus2','Esus4','Cadd9','G/B','D/F#','C/G'],
+  guitar:{core:'Embellish while strumming: D – Dsus4 – D – Dsus2, one bar each, then two beats each. Same with A – Asus4 – A – Asus2. Then the walk-downs: C – G/B – Am and G – D/F# – Em, listening to the bass string.',
+          stretch:'Keep the ring finger and little finger planted on fret 3 of the top two strings and move only the other fingers through G – Cadd9 – Dsus4 – Em7.'},
+  piano:{core:'Play C major in root position, first inversion (E–G–C) and second inversion (G–C–E), up and back. Then left hand walks C – B – A – G while the right hand plays C, G, Am, C.',
+         stretch:'Csus4 (C–F–G) resolving to C, in three keys. Then A Whiter Shade of Pale\'s descending bass under held chords.'},
+  voice:{core:'Sing the suspension resolving: 1–4–3, then 1–2–3. Major 3rds are usually sung sharp; land the 3rd and check it on the trace.',
+         stretch:'Sing a descending bass line (do–ti–la–sol) while you play the chords above it.'},
+  voiceTech:'Tuning the 3rd. When a 4 resolves down to a 3, aim slightly lower than feels natural. If the trace sits above the centre line every time, that is your habit; correct it deliberately.',
+  voiceTrainers:[{kind:'seq',label:'Resolutions: 1–4–3 and 1–2–3',fit:true,rel:[0,5,4,0,2,4]},{kind:'seq',label:'Descending bass: do–ti–la–sol',fit:true,rel:[12,11,9,7]}],
+  pianoTrainers:[{kind:'seq',label:'Bass walk under C – G/B – Am – C/G',pcs:['C','B','A','G']},{kind:'seq',label:'C major inversions (lowest notes)',pcs:['C','E','G','C']}],
+  guitarTrainers:[{kind:'seq',label:'Bass walk G – F# – E',pcs:['G','F#','E']}],
+  rhythm:['ddu'],
+  loops:[{label:'D – Dsus4 – D – Dsus2',chords:['D','Dsus4','D','Dsus2'],bpm:80,per:2},{label:'C – G/B – Am – C/G',chords:['C','G/B','Am','C/G'],bpm:72},{label:'G – Cadd9 – Dsus4 – G',chords:['G','Cadd9','Dsus4','G'],bpm:84}],
+  quiz:['sus','slash'], ear:{intervals:[2,4,5]}, earLabel:'2nd, 3rd or 4th above the root? (sus2, major, sus4)',
+  songs:[
+    {t:'Crazy Little Thing Called Love',a:'Queen',g:'Rockabilly',prog:'D – Dsus4 – D riff, then G–C–G',use:'Guitar: the sus4 embellishment at speed. Voice: low, relaxed, rhythmic.'},
+    {t:'Good Riddance (Time of Your Life)',a:'Green Day',g:'Acoustic punk',prog:'G – Cadd9 – D with anchored fingers',use:'Guitar: the anchored-finger shapes, picked then strummed.'},
+    {t:'Landslide',a:'Fleetwood Mac',g:'Folk rock',prog:'C – G/B – Am7 – G/B, capo 3',use:'Guitar: fingerpicked slash-chord walk. Voice: gentle and exposed; pitch has nowhere to hide.'},
+    {t:'A Whiter Shade of Pale',a:'Procol Harum',g:'Baroque pop',prog:'C – C/B – Am – Am/G – F – F/E – Dm – Dm/C',use:'Piano: a bass line descending by step under changing chords.'}
+  ]
+},
+{
+  id:'u15', stage:'Stage 4 · Fluency', title:'Sixteenth notes and syncopation',
+  concept:`<p><b>Sixteenth notes</b> split each beat into four, counted <b>"1 e & a, 2 e & a…"</b>. The strumming pendulum doubles: down on the numbers and the "&"s, up on the "e"s and "a"s. The hand never stops; the pattern is which swings touch the strings.</p>
+  <p><b>Syncopation</b> is accenting what falls <i>off</i> the main beats, or leaving a strong beat empty so the ear leans forward. Three kinds you will meet everywhere:</p>
+  <p><b>Backbeat:</b> the snare on 2 and 4. Clap there, not on 1 and 3. <b>Off-beats:</b> playing only the "&"s, as in reggae and ska. <b>3+3+2:</b> eight eighth notes grouped as three, three, two, so accents land on 1, the "&" of 2, and 4. It sits under a huge amount of pop, Latin and piano-driven rock.</p>
+  <p>A <b>push</b> (anticipation) is changing chord an eighth note early, on the "&" of 4 instead of on 1. Most strummed pop does this constantly.</p>`,
+  chords:['Bm','D','F#m','E','Em','A'],
+  guitar:{core:'Mute the strings with the fretting hand and strum straight sixteenths at 50 bpm, accenting beats 2 and 4. Then the sixteenth groove in the rhythm trainer over Em – A.',
+          stretch:'Push the chord change: move to the next chord on the "&" of 4. Then the Get Lucky loop Bm – D – F#m – E with the sixteenth groove.'},
+  piano:{core:'Left hand plays the root on every beat. Right hand plays the chord only on the "&"s. Then the 3+3+2 comp: right-hand chord on 1, the "&" of 2, and 4.',
+         stretch:'Break the chord into a 3+3+2 arpeggio (the Clocks pattern): top note, middle, bottom, grouped 3+3+2 across the bar.'},
+  voice:{core:'Count "1 e & a" aloud while tapping quarter notes with your foot. Then speak a lyric in strict rhythm on a monotone before you sing it. Use the rhythm trainer\'s tap test on each pattern.',
+         stretch:'Sing a scale in the 3+3+2 rhythm with the metronome.'},
+  voiceTech:'Diction and time. Consonants land on the beat and the vowel follows. If your singing drags behind the strum, the consonants are late. Speak the line in rhythm first.',
+  voiceTrainers:[{kind:'seq',label:'Major scale (do to do)',fit:true,rel:[0,2,4,5,7,9,11,12,11,9,7,5,4,2,0]},{kind:'match',count:8}],
+  pianoTrainers:[{kind:'seq',label:'Clocks-style broken chord in D: A – F# – D',pcs:['A','F#','D','A','F#','D','A','F#']}],
+  guitarTrainers:[],
+  rhythm:['backbeat','tresillo','sixteen','sync16'],
+  loops:[{label:'Bm – D – F#m – E (Get Lucky)',chords:['Bm','D','F#m','E'],bpm:96},{label:'Em – A',chords:['Em','A'],bpm:88},{label:'G – D – Em – C',chords:['G','D','Em','C'],bpm:84}],
+  quiz:['sixteenth','rhythm'], ear:{intervals:[2,3,4,5,7,9,12]}, earLabel:'Interval review',
+  songs:[
+    {t:"I'm Yours",a:'Jason Mraz',g:'Acoustic pop',prog:'I–V–vi–IV (B F# G#m E; G shapes with capo 4)',use:'Guitar: muted off-beat strum. Voice: fast, syncopated lyric delivery.'},
+    {t:'Clocks',a:'Coldplay',g:'Piano rock',prog:'Eb – Bbm – Fm, each as a 3+3+2 arpeggio',use:'Piano: the 3+3+2 pattern is the whole song. Start in D – Am – Em to stay on easier keys.'},
+    {t:'Get Lucky',a:'Daft Punk',g:'Funk / disco',prog:'Bm – D – F#m – E loop',use:'Guitar: sixteenth-note funk strum with muted ghost strokes, plus barre practice.'},
+    {t:'Faith',a:'George Michael',g:'Pop / rockabilly',prog:'Mostly I and IV (B and E)',use:'Guitar: percussive sixteenth strum on two chords, so all attention goes to the right hand.'}
+  ]
+},
+{
+  id:'u16', stage:'Stage 4 · Fluency', title:'The circle of fifths and secondary dominants',
+  concept:`<p>Put the 12 keys in a circle so each is a 5th above the last: <b>C – G – D – A – E – B …</b> going clockwise, and <b>C – F – Bb – Eb – Ab …</b> anticlockwise. Each clockwise step adds one sharp; each anticlockwise step adds one flat.</p>
+  <p>Neighbours on the circle share six of their seven notes, so they are the easiest keys to move between. A key's IV chord is its anticlockwise neighbour and its V chord is its clockwise neighbour: around C you find F and G.</p>
+  <p>A <b>secondary dominant</b> is a dominant 7th chord borrowed to point at a chord other than I. In C: <b>D7</b> leads to G (V of V), <b>E7</b> leads to Am (V of vi), <b>A7</b> leads to Dm (V of ii). Each contains one note from outside the key, and that note is what creates the pull. Chain them and you travel round the circle: E7 – A7 – D7 – G7 – C.</p>
+  <p><b>Key changes</b> use the same idea: play the new key's V7 and you have arrived. The classic final-chorus lift moves everything up a whole step.</p>`,
+  chords:['C','A7','D7','G7','E7','Am','B7'],
+  guitar:{core:'C – A7 – D7 – G7, one bar each, then the longer chain E7 – A7 – D7 – G7 – C. Listen for the pull at each change.',
+          stretch:'Play I – IV – V – I in C, then G, D, A and E, moving clockwise round the circle without stopping.'},
+  piano:{core:'Left hand roots, right hand dominant 7ths: G7 → C, C7 → F, F7 → Bb, moving anticlockwise. Keep the right hand close: only two notes need to move at each change.',
+         stretch:'Take a four-chord song you know and move it up a whole step for the last chorus, using the new key\'s V7 as the pivot.'},
+  voice:{core:'Sing the roots of the chain E – A – D – G – C with the trainer, then against your own chords. Then the raised 4th leading up to 5: do – mi – fi – sol.',
+         stretch:'Sing a chorus you know, then again a whole step higher. Check the first note of the new key with the pitch meter.'},
+  voiceTech:'Notes outside the key. An accidental feels wrong for a moment, so singers flatten it back toward the scale. Sing it as a leading note: hear where it is going and it will sit in tune.',
+  voiceTrainers:[{kind:'seq',label:'Roots round the circle: E – A – D – G – C',fit:true,rel:[4,9,2,7,0]},{kind:'seq',label:'do – mi – fi – sol',fit:true,rel:[0,4,6,7]}],
+  pianoTrainers:[{kind:'seq',label:'Roots anticlockwise: C – F – Bb – Eb',pcs:['C','F','Bb','Eb']},{kind:'seq',label:'Roots of E7 – A7 – D7 – G7 – C',pcs:['E','A','D','G','C']}],
+  guitarTrainers:[{kind:'seq',label:'Roots of E7 – A7 – D7 – G7 – C',pcs:['E','A','D','G','C']}],
+  rhythm:['shuffle'],
+  loops:[{label:'C – A7 – D7 – G7',chords:['C','A7','D7','G7'],bpm:92,swing:true},{label:'C – E7 – Am – F (V of vi)',chords:['C','E7','Am','F'],bpm:80},{label:'E7 – A7 – D7 – G7 – C – C',chords:['E7','A7','D7','G7','C','C'],bpm:96,swing:true}],
+  quiz:['circle','secdom'], ear:{qualities:['maj','min','dom7']}, earLabel:'Major, minor or dominant 7th?',
+  songs:[
+    {t:"Hey, Good Lookin'",a:'Hank Williams',g:'Country',prog:'C, then D7 – G7 – C (II7–V7–I)',use:'Guitar: the D7 that is not in the key, resolving round the circle.'},
+    {t:'Imagine',a:'John Lennon',g:'Piano ballad',prog:'C – Cmaj7 – F verse; E7 appears at the end of the chorus',use:'Piano: the classic part, with one secondary dominant to spot by ear.'},
+    {t:"Don't Look Back in Anger",a:'Oasis',g:'Britpop',prog:'C – G – Am – E7 – F – G – C',use:'Guitar + voice: E7 pulling to F instead of Am. Sing the chorus; it sits high.'},
+    {t:'Yesterday',a:'The Beatles',g:'Pop ballad',prog:'F – Em7 – A7 – Dm (a ii–V into the relative minor)',use:'Stretch. Guitar fingerstyle or piano: a secondary ii–V in the second bar.'},
+    {t:'My Girl',a:'The Temptations',g:'Motown',prog:'I–IV vamp in C, then the whole song lifts to D',use:'Voice: a key change up a whole step. Guitar: the pentatonic bass riff.'}
+  ]
+},
+{
+  id:'u17', stage:'Stage 4 · Fluency', title:'Modes and borrowed chords',
+  concept:`<p>A <b>mode</b> is the major scale's set of notes with a different note treated as home. Two are worth knowing first, because they explain chords that otherwise look "wrong".</p>
+  <p><b>Mixolydian</b> is a major scale with a lowered 7th: G A B C D E <b>F</b>. That lowered note gives you a major chord a whole step below the tonic, the <b>♭VII</b> (F in the key of G). I – ♭VII – IV is the sound of a great deal of rock.</p>
+  <p><b>Dorian</b> is a natural minor scale with a raised 6th: A B C D E <b>F#</b> G. It gives a minor key a <i>major</i> IV chord (Am – D). Brighter than plain minor; common in funk, folk and Latin rock.</p>
+  <p><b>Borrowed chords</b> are chords taken from the parallel minor into a major key. The usual three: <b>♭VII</b> (Bb in C), <b>♭VI</b> (Ab in C) and the <b>minor iv</b> (Fm in C). IV → iv → I is the bittersweet move you have heard in hundreds of ballads.</p>`,
+  chords:['D','C','G','Am','F','Fm','Bb'],
+  guitar:{core:'D – C – G – G (I – ♭VII – IV in D), then the Dorian vamp Am – D, two bars each. Over Am – D, play A minor pentatonic and add F# (D string fret 4, high E string fret 2).',
+          stretch:'C – F – Fm – C, listening for the single note that drops (A to Ab).'},
+  piano:{core:'D Mixolydian in the right hand (D E F# G A B C D) over left-hand D – C – G. Then A Dorian (A B C D E F# G) over Am – D.',
+         stretch:'C – F – Fm – C with voice leading: only one note changes between F and Fm.'},
+  voice:{core:'Sing the Mixolydian scale with the trainer and feel the lowered 7th; untrained singers drift up to the major 7th. Then the Dorian scale.',
+         stretch:'Sing either scale over a drone on the home note (Tools → Drone), then Scarborough Fair with the trainer.'},
+  voiceTech:'Singing against a drone. Hold the home note sounding and sing the scale slowly over it. Each scale degree has a distinct amount of tension against the drone; learning those feelings is what makes a singer accurate without a reference.',
+  voiceTrainers:[{kind:'seq',label:'Mixolydian scale',fit:true,rel:[0,2,4,5,7,9,10,12,10,9,7,5,4,2,0]},{kind:'seq',label:'Dorian scale',fit:true,rel:[0,2,3,5,7,9,10,12]},{kind:'seq',label:'Scarborough Fair (first two lines)',fit:true,midi:[62,62,69,69,69,64,65,64,62,69,72,74,72,69,71,67,69]}],
+  pianoTrainers:[{kind:'seq',label:'D Mixolydian',pcs:['D','E','F#','G','A','B','C','D']},{kind:'seq',label:'A Dorian',pcs:['A','B','C','D','E','F#','G','A']}],
+  guitarTrainers:[{kind:'seq',label:'A Dorian',pcs:['A','B','C','D','E','F#','G','A']}],
+  kbd:{label:'D Mixolydian: D major with C natural',midis:[62,64,66,67,69,71,72,74]},
+  fretboard:{label:'A Dorian around the 5th fret: pentatonic box plus B and F#',pcs:['A','B','C','D','E','F#','G'],root:'A',from:4,to:8},
+  rhythm:['tresillo','main'],
+  loops:[{label:'D – C – G – G (Mixolydian)',chords:['D','C','G','G'],bpm:96},{label:'Am – D (Dorian vamp)',chords:['Am','D'],bpm:92},{label:'C – F – Fm – C (minor iv)',chords:['C','F','Fm','C'],bpm:72},{label:'Bm – A – E (Wicked Game)',chords:['Bm','A','E','E'],bpm:100}],
+  quiz:['modes','borrowed'], ear:{intervals:[9,10,11]}, earLabel:'Major 6th, minor 7th or major 7th?',
+  songs:[
+    {t:'Sweet Home Alabama',a:'Lynyrd Skynyrd',g:'Southern rock',prog:'D – C – G (I – ♭VII – IV; people argue about whether home is D or G)',use:'Guitar: the picked riff across three chords. Theory: decide which chord sounds like home to you.'},
+    {t:'Scarborough Fair',a:'Traditional',g:'English folk',prog:'Dorian: Am – G – Am, with a major D chord',use:'Voice: the melody is in the trainer; listen for the raised 6th. Guitar: fingerpicked in 3/4.',melody:'Scarborough Fair'},
+    {t:'Oye Como Va',a:'Tito Puente / Santana',g:'Latin rock',prog:'Am7 – D9 vamp (Dorian)',use:'Piano: the two-chord montuno rhythm. Guitar: improvise with A Dorian.'},
+    {t:'Wicked Game',a:'Chris Isaak',g:'Rock ballad',prog:'Bm – A – E throughout',use:'Guitar: three chords, all atmosphere. Voice: chest voice to falsetto in the chorus.'},
+    {t:'Royals',a:'Lorde',g:'Pop',prog:'D – C – G (I – ♭VII – IV)',use:'Voice: sparse backing, so pitch is exposed. Piano: just bass notes and the vocal.'}
+  ]
+},
+{
+  id:'u18', stage:'Stage 4 · Fluency', title:'Harmony singing and arranging',
+  concept:`<p>A <b>harmony line</b> is a second melody that shadows the tune. The default is a <b>diatonic 3rd above</b>: for each melody note, sing the note two scale steps higher, staying inside the key. Some of those 3rds come out major and some minor; you do not choose, the key does. A <b>6th below</b> uses exactly the same note names an octave lower, which is often easier for a lower voice.</p>
+  <p>Parallel 3rds work most of the time. Where the harmony note clashes with the chord underneath, move it to the nearest chord tone.</p>
+  <p><b>Arranging</b> is deciding who plays what, when:</p>
+  <p><b>Space:</b> guitar gives rhythm, piano gives bass and sustain, and neither should double the vocal melody. <b>Shape:</b> start sparse, add something in each section, and save the fullest texture for the last chorus. <b>Register:</b> if the guitar strums in the middle, play the piano low or high, not on top of it. <b>Endings:</b> slow the last bar, or repeat the final line ("tag") and stop on the I chord.</p>`,
+  chords:['C','Am','F','G','Em','Dm'],
+  guitar:{core:'Fingerpicking pattern: thumb on the root, then index, middle and ring on strings 3, 2 and 1 (p–i–m–a–m–i), over C – Am – F – G. Thumb keeps time.',
+          stretch:'The G major scale in 3rds on the top two strings: play each scale note on the high E string with the note a 3rd below it on the B string.'},
+  piano:{core:'C major scale in 3rds: left hand plays the scale, right hand plays the same shape starting on E. Then both notes in the right hand (fingers 1+3, 2+4, 3+5).',
+         stretch:'Arrange one song from the course: an intro from the last line of the chorus, a sparse verse, a fuller chorus, and a planned ending.'},
+  voice:{core:'Learn the harmony to Twinkle Twinkle as its own tune with the trainer. Then play the melody on the piano while you sing the harmony. Cover one ear if the melody pulls you off.',
+         stretch:'Record yourself singing a melody (Voice Memos), play it back and sing a 3rd above it. Then try a 6th below.'},
+  voiceTech:'Holding a part. Learn the harmony alone until it is a tune in its own right, then add the melody quietly, then at full volume. If you get pulled onto the melody, go back a step; that is the normal route.',
+  voiceTrainers:[{kind:'seq',label:'Twinkle harmony (a 3rd above)',fit:true,midi:[64,71,72,71,69,67,65,64]},{kind:'seq',label:'Major scale in 3rds',fit:true,rel:[0,4,2,5,4,7,5,9,7,11,9,12]},{kind:'interval',label:'Sing a 3rd above',intervals:[3,4],count:8}],
+  pianoTrainers:[{kind:'seq',label:'Twinkle melody, then its harmony',pcs:['C','G','A','G','F','E','D','C','E','B','C','B','A','G','F','E']}],
+  guitarTrainers:[],
+  rhythm:['main'],
+  loops:[{label:'C – Am – F – G',chords:['C','Am','F','G'],bpm:72},{label:'Am – G – Am – G',chords:['Am','G'],bpm:84},{label:'C – F – C – G',chords:['C','F','C','G'],bpm:76}],
+  quiz:['harmony','diatonic','secdom'], ear:{intervals:[3,4,8,9]}, earLabel:'3rds and 6ths: which one?',
+  songs:[
+    {t:'The Sound of Silence',a:'Simon & Garfunkel',g:'Folk',prog:'Am – G, then C – F – C',use:'Voice: two-part harmony in 3rds throughout. Guitar: fingerpicked.'},
+    {t:'Bye Bye Love',a:'The Everly Brothers',g:"Country / rock 'n' roll",prog:'I – IV – V (A D E)',use:'Voice: parallel 3rds over three chords; the easiest real harmony song.'},
+    {t:'Lean on Me',a:'Bill Withers',g:'Soul / gospel',prog:'C stepping up through Dm, Em to F and back',use:'Piano: chords moving in parallel steps. Voice: built for group harmony.'},
+    {t:'Down to the River to Pray',a:'Traditional',g:'Gospel / a cappella',prog:'Mostly I, IV and V; often sung unaccompanied',use:'Voice: sing it with no instrument, then check your final note against the piano.'},
+    {t:'Blackbird',a:'The Beatles',g:'Folk / fingerstyle',prog:'G-based; bass and melody move in parallel 10ths',use:'Stretch. Guitar: fingerstyle with two moving voices.'}
+  ]
+}
+];
+CURRICULUM.forEach(u=>Object.assign(u, EXTRAS[u.id]||{}));
+STAGE4.forEach(u=>CURRICULUM.push(u));
+MELODIES['Scarborough Fair']=[62,62,69,69,69,64,65,64,62,69,72,74,72,69,71,67,69];
+
+Object.assign(GUITAR_SHAPES, {
+  'F (barre)':[1,3,3,2,1,1],'Bm':[-1,2,4,4,3,2],'F#m':[2,4,4,2,2,2],'B':[-1,2,4,4,4,2],'Gm':[3,5,5,3,3,3],'Cm':[-1,3,5,5,4,3],
+  'Fm':[1,3,3,1,1,1],'Bb':[-1,1,3,3,3,1],'C5':[-1,3,5,5,-1,-1],
+  'Dsus2':[-1,-1,0,2,3,0],'Asus4':[-1,0,2,2,3,0],'Asus2':[-1,0,2,2,0,0],'Esus4':[0,2,2,2,0,0],
+  'Cadd9':[-1,3,2,0,3,3],'G/B':[-1,2,0,0,0,3],'D/F#':[2,0,0,2,3,2],'C/G':[3,3,2,0,1,0]
+});
+
+// ===== AUDIO CORE =====
+let AC = null;
+function ac(){
+  if(!AC || AC.state==='closed'){ const C = window.AudioContext||window.webkitAudioContext; try{ AC = new C({latencyHint:'interactive'}); }catch(e){ AC = new C(); } }
+  if(AC.state!=='running'){ try{ const p=AC.resume(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} }  // also covers iOS "interrupted"
+  return AC;
+}
+const wakeAudio = ()=>{ if(AC && AC.state!=='running'){ try{ const p=AC.resume(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} } };
+document.addEventListener('pointerdown', wakeAudio, true);
+document.addEventListener('touchend', wakeAudio, true);
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) wakeAudio(); });
+
+function gateMic(seconds){ Mic.deafUntil = Math.max(Mic.deafUntil, performance.now()+seconds*1000); }
+function playNote(m, dur=1.2, when=0, vol=0.32, gate=true){
+  const c=ac(), t=c.currentTime+when, f=midiToFreq(m);
+  const g=c.createGain(); const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=3200;
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.008); g.gain.exponentialRampToValueAtTime(0.0008,t+dur);
+  [[1,'triangle',1],[2,'sine',0.35],[3,'sine',0.12]].forEach(([h,type,a])=>{ const o=c.createOscillator(); const og=c.createGain(); o.type=type; o.frequency.value=f*h; og.gain.value=a; o.connect(og); og.connect(lp); o.start(t); o.stop(t+dur+0.05); });
+  lp.connect(g); g.connect(c.destination);
+  if(gate) gateMic(when+dur*0.8+0.15);
+}
+function playChordMidi(ms, dur=1.6, arp=0, vol=0.22){ ms.forEach((m,i)=>playNote(m,dur,i*arp,vol)); }
+function chordPcs(name){ const p=parseChord(name); return p ? CHORD_FORMULAS[p.q].map(([s])=>mod(pcOf(p.root)+s,12)) : []; }
+function chordMidis(name, base=48){
+  const p=parseChord(name); if(!p) return [];
+  const root=base+pcOf(p.root);
+  const ms=CHORD_FORMULAS[p.q].map(([s])=>root+s);
+  if(p.bass){ let b=base+pcOf(p.bass); while(b>=ms[0]) b-=12; ms.unshift(b); }
+  return ms;
+}
+function tickAt(t, freq=1900, vol=0.3){ const o=AC.createOscillator(), g=AC.createGain(); o.frequency.value=freq; g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.04); o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.05); }
+let _noise=null;
+function chkAt(t, vol=0.25, up=false){ // short unpitched "strum" tick
+  if(!_noise || _noise.sampleRate!==AC.sampleRate){ _noise=AC.createBuffer(1, Math.floor(AC.sampleRate*0.08), AC.sampleRate); const d=_noise.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; }
+  const s=AC.createBufferSource(); s.buffer=_noise; const f=AC.createBiquadFilter(); f.type='bandpass'; f.frequency.value=up?5200:3200; f.Q.value=0.8;
+  const g=AC.createGain(); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.06); s.connect(f); f.connect(g); g.connect(AC.destination); s.start(t); s.stop(t+0.08);
+}
+
+// ----- Lookahead scheduler (one active at a time) -----
+class Sched{
+  constructor(o){ Object.assign(this,{bpm:70,spb:1,swing:false,onStep(){},onStop(){}},o); this.on=false; }
+  stepDur(i){ const b=60/this.bpm; if(this.spb===2 && this.swing) return (i%2===0?2/3:1/3)*b; return b/this.spb; }
+  start(){ Sched.stopAll(); ac(); this.i=0; this.next=AC.currentTime+0.12; this.on=true; Sched.active=this; this.timer=setInterval(()=>this.tick(),25); this.tick(); }
+  tick(){ if(!this.on) return; let guard=0;
+    while(this.on && this.next < AC.currentTime+0.15 && guard++<64){ const t=this.next, i=this.i; const perf=performance.now()+(t-AC.currentTime)*1000; this.next+=this.stepDur(i); this.i++; this.onStep(i,t,perf); } }
+  stop(){ if(!this.on) return; this.on=false; clearInterval(this.timer); if(Sched.active===this) Sched.active=null; this.onStop(); }
+  static stopAll(){ if(Sched.active) Sched.active.stop(); }
+}
+Sched.active=null;
+const at = (perf, fn)=>setTimeout(fn, Math.max(0, perf-performance.now()));
+const outLatencyMs = ()=> AC ? ((AC.outputLatency||AC.baseLatency||0)*1000) : 0;
+
+// Drone
+const Drone = { nodes:null,
+  start(pc, fifth=true){ this.stop(); const c=ac(); const g=c.createGain(); g.gain.setValueAtTime(0.0001,c.currentTime); g.gain.exponentialRampToValueAtTime(0.16,c.currentTime+0.4);
+    const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1400; lp.connect(g); g.connect(c.destination);
+    const root=36+pc+(pc<4?12:0); const fs=[root,root+12].concat(fifth?[root+7]:[]);
+    const os=fs.map((m,i)=>{ const o=c.createOscillator(); o.type=i===2?'sine':'sawtooth'; o.frequency.value=midiToFreq(m); const og=c.createGain(); og.gain.value=i===0?0.5:i===1?0.3:0.25; o.connect(og); og.connect(lp); o.start(); return o; });
+    this.nodes={g,os}; Mic.droneOn=true; },
+  stop(){ if(!this.nodes) return; const {g,os}=this.nodes; const t=AC.currentTime; try{ g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.2); os.forEach(o=>o.stop(t+0.25)); }catch(e){} this.nodes=null; Mic.droneOn=false; }
+};
+
+// ===== PITCH DETECTION (McLeod pitch method: amplitude-independent) =====
+const _nsdf = new Float32Array(1100);
+function detectPitch(buf, sr){
+  const N=buf.length; let e=0; for(let i=0;i<N;i++) e+=buf[i]*buf[i];
+  const rms=Math.sqrt(e/N);
+  if(rms<1e-5) return {freq:-1, rms, clarity:0};
+  const maxLag=Math.min(N>>1, Math.floor(sr/62), _nsdf.length-2), minLag=Math.max(2,Math.floor(sr/1250));
+  for(let tau=0; tau<=maxLag; tau++){ let acf=0, m=0; const lim=N-tau;
+    for(let i=0;i<lim;i++){ const a=buf[i], b=buf[i+tau]; acf+=a*b; m+=a*a+b*b; }
+    _nsdf[tau] = m>0 ? 2*acf/m : 0; }
+  let tau=1; while(tau<maxLag && _nsdf[tau]>0) tau++;
+  let gmax=0; const peaks=[];
+  while(tau<maxLag){
+    while(tau<maxLag && _nsdf[tau]<=0) tau++;
+    let pv=-1, pt=-1;
+    while(tau<maxLag && _nsdf[tau]>0){ if(_nsdf[tau]>pv){ pv=_nsdf[tau]; pt=tau; } tau++; }
+    if(pt>0 && pt<maxLag-1 && _nsdf[pt]>=_nsdf[pt-1] && _nsdf[pt]>=_nsdf[pt+1]){ peaks.push(pt); if(pv>gmax) gmax=pv; }
+  }
+  if(!peaks.length) return {freq:-1, rms, clarity:0};
+  const thr=gmax*0.9; let pt=peaks[0]; for(const p of peaks){ if(_nsdf[p]>=thr){ pt=p; break; } }
+  const a=_nsdf[pt-1], b=_nsdf[pt], c=_nsdf[pt+1]; const den=a-2*b+c; const sh = den ? 0.5*(a-c)/den : 0;
+  const T=pt+sh; if(T<minLag) return {freq:-1, rms, clarity:b};
+  return {freq: sr/T, rms, clarity: b-0.25*(a-c)*sh};
+}
+
+// ===== MICROPHONE =====
+const Mic = { stream:null, src:null, analyser:null, sink:null, buf:null, ok:false, err:null,
+  deafUntil:0, droneOn:false, floor:0.0004, hist:[], last:null, lastT:0, lastNonZero:0, lastPitchT:0, builtAt:0, rebuilds:0,
+  live(){ return !!(this.ok && this.stream && this.stream.getAudioTracks().some(t=>t.readyState==='live')); },
+  async start(){
+    const c=ac();                                   // called inside the tap, so the context may start
+    if(this.live()){ try{ await c.resume(); }catch(e){} return true; }
+    this.stop(); this.err=null;
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ this.err={name:'Unsupported'}; return false; }
+    try{
+      try{ this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); }
+      catch(e){ if(e && (e.name==='OverconstrainedError'||e.name==='TypeError')) this.stream = await navigator.mediaDevices.getUserMedia({audio:true}); else throw e; }
+    }catch(e){ this.err=e; return false; }
+    this.rebuilds=0;
+    await this.build();
+    return true;
+  },
+  async build(){
+    const c=ac();
+    try{ await c.resume(); }catch(e){}                // the permission prompt can leave iOS audio "interrupted"
+    try{ if(this.src) this.src.disconnect(); }catch(e){}
+    this.src=c.createMediaStreamSource(this.stream);
+    this.analyser=c.createAnalyser(); this.analyser.fftSize=2048; this.analyser.smoothingTimeConstant=0;
+    this.sink=c.createGain(); this.sink.gain.value=0;  // Safari only runs nodes that reach the output
+    this.src.connect(this.analyser); this.analyser.connect(this.sink); this.sink.connect(c.destination);
+    this.buf=new Float32Array(this.analyser.fftSize);
+    this.ok=true; this.hist=[]; this.last=null; this.builtAt=this.lastNonZero=performance.now();
+  },
+  async rebuild(){ // a context created before the mic opened can stay silent on iOS: start a fresh one
+    Sched.stopAll(); Drone.nodes=null; this.droneOn=false;
+    try{ AC.close(); }catch(e){} AC=null; _noise=null;
+    await this.build();
+  },
+  stop(){ try{ if(this.stream) this.stream.getTracks().forEach(t=>t.stop()); }catch(e){} try{ if(this.src) this.src.disconnect(); }catch(e){} this.stream=null; this.src=null; this.ok=false; },
+  read(){
+    if(!this.ok || !this.analyser) return null;
+    const now=performance.now();
+    if(this.last && now-this.lastT<28) return this.last;
+    this.lastT=now;
+    this.analyser.getFloatTimeDomainData(this.buf);
+    let peak=0; for(let i=0;i<this.buf.length;i+=4){ const a=Math.abs(this.buf[i]); if(a>peak) peak=a; }
+    if(peak>0) this.lastNonZero=now;
+    const running = AC.state==='running';
+    const silent = running && now-this.lastNonZero>1500 && now-this.builtAt>1500;
+    if(silent && this.rebuilds<2 && this.live()){ this.rebuilds++; this.rebuild(); }
+    const r=detectPitch(this.buf, AC.sampleRate);
+    const headphones = !!(S.settings && S.settings.headphones);
+    const deaf = !headphones && (now<this.deafUntil || this.droneOn);
+    let midi=null;
+    if(!deaf && r.freq>0 && r.clarity>=0.82 && r.rms>Math.max(0.0006,this.floor*2)){
+      const m=freqToMidi(r.freq); if(this.hist.length && now-this.lastPitchT>160) this.hist.length=0;
+      this.hist.push(m); if(this.hist.length>3) this.hist.shift();
+      midi = this.hist.length<3 ? m : this.hist.slice().sort((x,y)=>x-y)[1];
+      this.lastPitchT=now;
+    } else if(r.clarity<0.5){ this.floor = this.floor*0.97 + r.rms*0.03; }
+    const db = r.rms>0 ? 20*Math.log10(r.rms) : -100;
+    this.last = { midi, freq:r.freq, clarity:r.clarity, rms:r.rms, level:Math.max(0,Math.min(1,(db+72)/60)), deaf, silent, running, live:this.live() };
+    return this.last;
+  }
+};
+
 // ===== STATE & STORAGE =====
+const BUILD = 'Version 2 · 14 Nov 2026';
+const HOSTED_URL = 'https://adambyass.github.io/triad/';
 const STORE_KEY = 'triad.v1';
 const STRANDS = ['voice','theory','guitar','piano','songs'];
 const STRAND_LABEL = {voice:'Voice & ear',theory:'Theory',guitar:'Guitar',piano:'Piano',songs:'Songs'};
+const RATING = ['','Struggled','OK','Solid'];
 const unitById = id => CURRICULUM.find(u=>u.id===id);
 const unitIndex = id => CURRICULUM.findIndex(u=>u.id===id);
 
-function defaultState(){ return {v:1, updated:0, placed:false, unit:'u1', levels:{guitar:1,piano:0,voice:0,theory:0},
-  range:{low:45,high:64}, ratings:{}, completed:[], sessions:[], seenConcept:{}, session:null, bests:{} }; }
-let S = defaultState();
+function defaultState(){ return {v:2, updated:0, placed:false, unit:'u1', levels:{guitar:1,piano:0,voice:0,theory:0},
+  range:{low:45,high:64}, ratings:{}, completed:[], sessions:[], seenConcept:{}, session:null, bests:{}, metrics:[], settings:{headphones:false} }; }
+var S = defaultState();
 try { const raw = localStorage.getItem(STORE_KEY); if (raw) S = Object.assign(defaultState(), JSON.parse(raw)); } catch(e){}
 
-let dbDoc = null, saveTimer = null;
+let dbDoc = null, saveTimer = null, cloudOK = false;
 function save(){
   S.updated = Date.now();
   try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e){}
@@ -557,7 +1027,7 @@ function save(){
 }
 async function initCloud(){
   try{
-    if(!window.claude || !window.claude.use) return;
+    if(dbDoc || !window.claude || !window.claude.use) return;
     const [db,user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
     if(!db || !user) return;
     const id = await user.id(); if(!id) return;
@@ -565,240 +1035,281 @@ async function initCloud(){
     const snap = await Promise.race([ref.get(), new Promise((_,rej)=>setTimeout(()=>rej('timeout'),10000))]);
     let data = null;
     if (snap) { data = typeof snap.data==='function' ? snap.data() : (snap.exists===false ? null : (snap.data!==undefined ? snap.data : snap)); }
-    dbDoc = ref;
+    dbDoc = ref; cloudOK = true;
     if (data && data.json && (data.updated||0) > (S.updated||0)) { S = Object.assign(defaultState(), JSON.parse(data.json)); try{localStorage.setItem(STORE_KEY, JSON.stringify(S));}catch(e){} render(); }
     else save();
-    cloudOK = true; render();
   }catch(e){}
 }
-let cloudOK = false;
-
-function rate(unitId, strand, r){
-  S.ratings[unitId] = S.ratings[unitId] || {};
-  (S.ratings[unitId][strand] = S.ratings[unitId][strand] || []).push(r);
-  save();
-}
-function strandAvg(unitId, strand){
-  const a = (S.ratings[unitId]||{})[strand]||[]; if(!a.length) return null;
-  const last = a.slice(-3); return last.reduce((x,y)=>x+y,0)/last.length;
-}
-function unitReady(unitId){
-  return STRANDS.every(s=>{ const a=(S.ratings[unitId]||{})[s]||[]; return a.length>=2 && strandAvg(unitId,s)>=2.4; });
-}
-
-// ===== AUDIO =====
-let AC = null;
-function ac(){ if(!AC){ AC = new (window.AudioContext||window.webkitAudioContext)(); } if(AC.state==='suspended') AC.resume(); return AC; }
-function playNote(m, dur=1.2, when=0, vol=0.32){
-  const c=ac(), t=c.currentTime+when, f=midiToFreq(m);
-  const g=c.createGain(); const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=3200;
-  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.008); g.gain.exponentialRampToValueAtTime(0.0008,t+dur);
-  [[1,'triangle',1],[2,'sine',0.35],[3,'sine',0.12]].forEach(([h,type,a])=>{ const o=c.createOscillator(); const og=c.createGain(); o.type=type; o.frequency.value=f*h; og.gain.value=a; o.connect(og); og.connect(lp); o.start(t); o.stop(t+dur+0.05); });
-  lp.connect(g); g.connect(c.destination);
-}
-function playChordMidi(ms, dur=1.6, arp=0){ ms.forEach((m,i)=>playNote(m,dur,i*arp,0.22)); }
-function chordMidis(name, base=48){
-  const p=parseChord(name); if(!p) return [];
-  const r=pcOf(p.root); let root=base+r; if(root<base) root+=12;
-  return CHORD_FORMULAS[p.q].map(([s])=>root+s);
-}
-
-// Metronome
-const Metro = { bpm:70, beats:4, on:false, next:0, beat:0, timer:null, listeners:[] ,
-  start(){ ac(); this.on=true; this.beat=0; this.next=AC.currentTime+0.06; this.timer=setInterval(()=>this.tick(),25); this.emit(); },
-  stop(){ this.on=false; clearInterval(this.timer); this.emit(-1); },
-  toggle(){ this.on?this.stop():this.start(); },
-  tick(){ while(this.next < AC.currentTime+0.12){ this.click(this.next, this.beat%this.beats===0); const b=this.beat%this.beats, d=(this.next-AC.currentTime)*1000; setTimeout(()=>this.emit(b),Math.max(0,d)); this.next += 60/this.bpm; this.beat++; } },
-  click(t, accent){ const o=AC.createOscillator(), g=AC.createGain(); o.frequency.value=accent?1500:1000; g.gain.setValueAtTime(accent?0.5:0.3,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.05); o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.06); },
-  emit(b){ this.listeners.forEach(f=>f(b)); }
-};
-
-// ===== PITCH DETECTION =====
-const Mic = { stream:null, analyser:null, buf:null, ok:false, err:null,
-  async start(){
-    if(this.ok) return true;
-    try{
-      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('unsupported');
-      this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
-      const c=ac(); const src=c.createMediaStreamSource(this.stream);
-      this.analyser=c.createAnalyser(); this.analyser.fftSize=4096; src.connect(this.analyser);
-      this.buf=new Float32Array(this.analyser.fftSize); this.ok=true; this.err=null; return true;
-    }catch(e){ this.err=e; this.ok=false; return false; }
-  },
-  read(){ // returns {freq, rms} or null
-    if(!this.ok) return null;
-    this.analyser.getFloatTimeDomainData(this.buf);
-    return detectPitch(this.buf, AC.sampleRate);
-  }
-};
-function detectPitch(buf, sr){
-  let size=buf.length, rms=0; for(let i=0;i<size;i++) rms+=buf[i]*buf[i]; rms=Math.sqrt(rms/size);
-  if(rms<0.012) return {freq:-1, rms};
-  let r1=0,r2=size-1; const th=0.2;
-  for(let i=0;i<size/2;i++) if(Math.abs(buf[i])<th){r1=i;break;}
-  for(let i=1;i<size/2;i++) if(Math.abs(buf[size-i])<th){r2=size-i;break;}
-  const b=buf.slice(r1,r2); size=b.length;
-  const maxLag=Math.min(size, Math.floor(sr/60)); const c=new Float32Array(maxLag);
-  for(let i=0;i<maxLag;i++){ let s=0; for(let j=0;j<size-i;j++) s+=b[j]*b[j+i]; c[i]=s; }
-  let d=0; while(d<maxLag-1 && c[d]>c[d+1]) d++;
-  let maxv=-1,maxp=-1; for(let i=d;i<maxLag;i++){ if(c[i]>maxv){maxv=c[i];maxp=i;} }
-  if(maxp<=0 || maxp>=maxLag-1) return {freq:-1,rms};
-  const x1=c[maxp-1],x2=c[maxp],x3=c[maxp+1]; const a=(x1+x3-2*x2)/2, bb=(x3-x1)/2;
-  const T0 = a ? maxp-bb/(2*a) : maxp;
-  const f = sr/T0; if(f<60||f>1400) return {freq:-1,rms};
-  return {freq:f, rms};
-}
+function rate(unitId, strand, r){ S.ratings[unitId] = S.ratings[unitId] || {}; (S.ratings[unitId][strand] = S.ratings[unitId][strand] || []).push(r); save(); }
+function strandAvg(unitId, strand){ const a = (S.ratings[unitId]||{})[strand]||[]; if(!a.length) return null; const last = a.slice(-3); return last.reduce((x,y)=>x+y,0)/last.length; }
+function unitReady(unitId){ return STRANDS.every(s=>{ const a=(S.ratings[unitId]||{})[s]||[]; return a.length>=2 && strandAvg(unitId,s)>=2.4; }); }
+function logMetric(m){ S.metrics.push(Object.assign({d:Date.now()},m)); if(S.metrics.length>300) S.metrics=S.metrics.slice(-300); save(); }
 
 // ===== HELPERS =====
 const $ = (s,el=document)=>el.querySelector(s);
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function h(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; }
 const fmtMin = m=>`${m} min`;
+const cssVar = n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let loopOwner=null, loopRAF=null;
+function stopLoops(){ if(loopRAF) cancelAnimationFrame(loopRAF); loopRAF=null; const o=loopOwner; loopOwner=null; if(o && o.onStop) o.onStop(); }
+function leave(){ stopLoops(); Sched.stopAll(); Drone.stop(); }
 
 // ===== DIAGRAMS =====
 function guitarSVG(name){
   const sh=GUITAR_SHAPES[name]; if(!sh) return '';
-  const W=110,H=140,x0=18,y0=38,sw=15,fh=19, maxF=Math.max(...sh,0);
-  const base = maxF>5 ? Math.min(...sh.filter(f=>f>0)) : 1;
+  const W=110,H=140,x0=18,y0=38,sw=15,fh=19, fretted=sh.filter(f=>f>0), maxF=Math.max(...sh,0);
+  const base = maxF>5 ? Math.min(...fretted) : 1;
   let s=`<svg viewBox="0 0 ${W} ${H}" class="gsvg" role="img" aria-label="${esc(name)} guitar chord"><text x="${W/2}" y="14" text-anchor="middle" class="dname">${esc(name)}</text>`;
   if(base===1) s+=`<rect x="${x0}" y="${y0-3}" width="${sw*5}" height="3" fill="currentColor"/>`; else s+=`<text x="${x0+sw*5+5}" y="${y0+fh*0.7}" class="fret">${base}fr</text>`;
   for(let i=0;i<6;i++) s+=`<line x1="${x0+i*sw}" y1="${y0}" x2="${x0+i*sw}" y2="${y0+fh*5}" stroke="currentColor" stroke-width="1"/>`;
   for(let j=0;j<=5;j++) s+=`<line x1="${x0}" y1="${y0+j*fh}" x2="${x0+sw*5}" y2="${y0+j*fh}" stroke="currentColor" stroke-width="1" opacity=".6"/>`;
+  // barre: lowest fret held on 2+ strings including the outermost fretted strings
+  const minF=fretted.length?Math.min(...fretted):0, atMin=sh.map((f,i)=>f===minF?i:-1).filter(i=>i>=0);
+  if(fretted.length>=5 && atMin.length>=2 && !sh.includes(0)){ const a=atMin[0], b=atMin[atMin.length-1]; s+=`<rect x="${x0+a*sw-6}" y="${y0+(minF-base+0.5)*fh-5}" width="${(b-a)*sw+12}" height="10" rx="5" class="dot"/>`; }
   sh.forEach((f,i)=>{ const x=x0+i*sw;
     if(f<0) s+=`<text x="${x}" y="${y0-7}" text-anchor="middle" class="xo">×</text>`;
     else if(f===0) s+=`<circle cx="${x}" cy="${y0-10}" r="3.6" fill="none" stroke="currentColor"/>`;
     else s+=`<circle cx="${x}" cy="${y0+(f-base+0.5)*fh}" r="6" class="dot"/>`; });
   return s+'</svg>';
 }
-function keyboardSVG(pcsHighlight=[], {octaves=2, label=true}={}){
-  const hl = new Set(pcsHighlight.map(n=>typeof n==='number'?mod(n,12):pcOf(n)));
-  const wk=[0,2,4,5,7,9,11], bk=[1,3,6,8,10], bx={1:1,3:2,6:4,8:5,10:6};
-  const ww=22, W=ww*7*octaves, H=86;
-  let s=`<svg viewBox="0 0 ${W} ${H}" class="ksvg" role="img" aria-label="keyboard">`;
-  for(let o=0;o<octaves;o++) wk.forEach((pc,i)=>{ const x=(o*7+i)*ww; const on=hl.has(pc);
-    s+=`<rect x="${x}" y="0" width="${ww}" height="${H}" class="wk${on?' on':''}"/>`;
-    if(label && (on || pc===0)) s+=`<text x="${x+ww/2}" y="${H-7}" text-anchor="middle" class="kl${on?' onl':''}">${SHARP[pc]}${pc===0&&!on?o+3:''}</text>`; });
-  for(let o=0;o<octaves;o++) bk.forEach(pc=>{ const x=(o*7+bx[pc])*ww-7; const on=hl.has(pc);
-    s+=`<rect x="${x}" y="0" width="14" height="${H*0.6}" class="bk${on?' on':''}"/>`;
-    if(label&&on) s+=`<text x="${x+7}" y="${H*0.6-6}" text-anchor="middle" class="kl onl sm">${SHARP[pc]}</text>`; });
+const isBlackKey = m=>[1,3,6,8,10].includes(mod(m,12));
+function keysSVG({from=48,to=71,on=[],pcs=null,labels=null,interactive=false}={}){
+  const onSet=new Set(on), pcSet=pcs?new Set(pcs.map(n=>typeof n==='number'?mod(n,12):pcOf(n))):null;
+  const isOn=m=>onSet.has(m)||(pcSet&&pcSet.has(mod(m,12)));
+  while(isBlackKey(from)) from--; while(isBlackKey(to)) to++;
+  const whites=[]; for(let m=from;m<=to;m++) if(!isBlackKey(m)) whites.push(m);
+  const ww=22, H=86, W=whites.length*ww;
+  const lab=m=>labels&&labels[m]!=null?String(labels[m]):(isOn(m)?SHARP[mod(m,12)]:'');
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="ksvg${interactive?' play':''}" role="img" aria-label="keyboard">`;
+  whites.forEach((m,i)=>{ const x=i*ww, o=isOn(m), pc=mod(m,12);
+    s+=`<rect x="${x}" y="0" width="${ww}" height="${H}" class="wk${o?' on':''}" data-m="${m}"/>`;
+    const t=lab(m)||(pc===0?'C'+(Math.floor(m/12)-1):'');
+    if(t) s+=`<text x="${x+ww/2}" y="${H-7}" text-anchor="middle" class="kl${o?' onl':''}">${t}</text>`; });
+  for(let m=from;m<=to;m++){ if(!isBlackKey(m)) continue; const i=whites.filter(w=>w<m).length, x=i*ww-7, o=isOn(m);
+    s+=`<rect x="${x}" y="0" width="14" height="${H*0.6}" class="bk${o?' on':''}" data-m="${m}"/>`;
+    const t=lab(m); if(t) s+=`<text x="${x+7}" y="${H*0.6-6}" text-anchor="middle" class="kl onl sm">${t}</text>`; }
   return s+'</svg>';
+}
+function kbdDiagram(k){
+  const lo=Math.min(...k.midis), hi=Math.max(...k.midis); const labels={};
+  k.midis.forEach((m,i)=>{ labels[m]=k.fingers?k.fingers[i]:SHARP[mod(m,12)]; });
+  return `<figure class="diag"><figcaption>${esc(k.label)}${k.fingers?' · numbers are fingers (1 = thumb)':''}</figcaption>${keysSVG({from:lo-mod(lo,12),to:hi+(11-mod(hi,12)),on:k.midis,labels})}<div class="cc-notes">${k.midis.map(m=>SHARP[mod(m,12)]).join(' · ')}</div></figure>`;
+}
+function fretboardSVG(fb){
+  const OPEN=[40,45,50,55,59,64], NAMES=['E','A','D','G','B','e'];
+  const names={}; fb.pcs.forEach(n=>names[pcOf(n)]=n); const rootPc=pcOf(fb.root);
+  const strings=fb.strings||[0,1,2,3,4,5];
+  const fw=44, sg=24, left=30, top=22, nf=fb.to-fb.from+1, W=left+nf*fw+10, H=top+5*sg+30;
+  const y=si=>top+(5-si)*sg;
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="fsvg" role="img" aria-label="${esc(fb.label)}">`;
+  for(let k=0;k<=nf;k++){ const nut=fb.from===0&&k===1; s+=`<line x1="${left+k*fw}" y1="${top}" x2="${left+k*fw}" y2="${top+5*sg}" stroke="currentColor" stroke-width="${nut?4:1}" opacity="${nut?1:.45}"/>`; }
+  for(let si=0;si<6;si++){ s+=`<line x1="${left}" y1="${y(si)}" x2="${left+nf*fw}" y2="${y(si)}" stroke="currentColor" stroke-width="${1+(5-si)*0.25}" opacity="${strings.includes(si)?.8:.25}"/><text x="10" y="${y(si)+4}" text-anchor="middle" class="fl">${NAMES[si]}</text>`; }
+  for(let f=fb.from;f<=fb.to;f++){ s+=`<text x="${left+(f-fb.from+0.5)*fw}" y="${H-8}" text-anchor="middle" class="fl">${f===0?'open':f}</text>`; }
+  strings.forEach(si=>{ for(let f=fb.from;f<=fb.to;f++){ const pc=mod(OPEN[si]+f,12); if(names[pc]===undefined) continue; const x=left+(f-fb.from+0.5)*fw, r=pc===rootPc;
+    s+=`<circle cx="${x}" cy="${y(si)}" r="10" class="${r?'fr':'fn'}"/><text x="${x}" y="${y(si)+3.5}" text-anchor="middle" class="ft${r?' r':''}">${names[pc]}</text>`; } });
+  return `<figure class="diag"><figcaption>${esc(fb.label)} · filled dots are the root</figcaption>${s}</svg></figure>`;
 }
 function chordCard(name){
   const p=parseChord(name); const notes=p?chordNotes(p.root,p.q):[];
-  return `<div class="chordcard"><div class="cc-top">${guitarSVG(name)}<button class="btn sm ghost" data-act="playchord" data-chord="${esc(name)}">▶ Hear</button></div>${keyboardSVG(notes,{octaves:2})}<div class="cc-notes">${notes.join(' · ')}</div></div>`;
+  return `<div class="chordcard"><div class="cc-top">${guitarSVG(name)}<button class="btn sm ghost" data-act="playchord" data-chord="${esc(name)}">► Hear</button></div>${keysSVG({pcs:notes})}<div class="cc-notes">${notes.join(' · ')}${p&&p.bass?` · bass ${p.bass}`:''}</div></div>`;
+}
+function wireChordButtons(root){ root.querySelectorAll('[data-act="playchord"]').forEach(b=>b.onclick=()=>{ ac(); playChordMidi(chordMidis(b.dataset.chord),1.8,0.07); }); }
+
+// ===== MICROPHONE UI =====
+function micErrorMsg(){
+  const e=Mic.err||{}; const hosted=/github\.io$|^localhost$|^127\./.test(location.hostname);
+  if(!hosted) return `<b>The microphone is blocked in this view.</b> Inside Claude it always is. Open the hosted copy in Safari for pitch checking: <a href="${HOSTED_URL}">${HOSTED_URL.replace('https://','')}</a>. Here, use <i>Got it</i> to self-check.`;
+  if(e.name==='NotAllowedError'||e.name==='SecurityError') return `<b>Microphone permission is off for this site.</b> In Safari tap the button at the left of the address bar, choose Website Settings, set Microphone to Allow, then reload. If that is missing: Settings app, Apps, Safari, Microphone, set to Ask or Allow.`;
+  if(e.name==='NotFoundError') return `<b>No microphone found.</b> If headphones or a Bluetooth device are connected, disconnect them and try again.`;
+  if(e.name==='Unsupported') return `<b>This browser view cannot use the microphone.</b> Open ${HOSTED_URL.replace('https://','')} directly in Safari.`;
+  return `<b>The microphone could not start</b> (${esc(e.name||'unknown error')}). Close other apps using the microphone, reload the page and try again.`;
+}
+const micRowHTML = `<div class="microw"><div class="lvl"><i data-r="lvl"></i></div><span data-r="mstat">Microphone off</span></div>`;
+function micStatusText(st, hearing){
+  if(!st.running) return 'Audio is paused: tap anywhere on the page';
+  if(st.silent) return 'No signal from the microphone';
+  if(st.deaf) return 'App is playing: listen';
+  return hearing || 'Listening…';
 }
 
 // ===== PITCH TRAINER =====
-let activeLoop = null;
-function stopLoops(){ if(activeLoop){ cancelAnimationFrame(activeLoop); activeLoop=null; } }
-
-function buildTargets(spec, instrument){
-  const {low,high}=S.range; const mid=(low+high)/2;
+function buildTargets(spec){
+  const {low,high}=S.range; const mid=(low+high)/2, span=high-low;
   const dedupe = a=>a.filter((x,i)=>i===0||x!==a[i-1]);
-  if(spec.kind==='match'){ const out=[]; for(let i=0;i<(spec.count||8);i++){ let m; do{ m=low+2+Math.floor(Math.random()*Math.max(1,high-low-3)); }while(out.length && m===out[out.length-1]); out.push(m);} return out.map(m=>({m})); }
-  if(spec.kind==='interval'){ const out=[]; const mx=Math.max(...spec.intervals); for(let i=0;i<(spec.count||8);i++){ const iv=rnd(spec.intervals); const root=low+1+Math.floor(Math.random()*Math.max(1,high-low-mx-1)); out.push({root, m:root+iv, iv}); } return out; }
+  const rint=(a,b)=>a+Math.floor(Math.random()*Math.max(1,b-a+1));
+  if(spec.kind==='match'){ const out=[]; for(let i=0;i<(spec.count||8);i++){ let m; do{ m=rint(low+2,high-2); }while(out.length && m===out[out.length-1]); out.push(m);} return out.map(m=>({m})); }
+  if(spec.kind==='hold'){ const out=[]; for(let i=0;i<(spec.count||3);i++){ let m; do{ m=rint(Math.round(low+span*0.3),Math.round(low+span*0.7)); }while(out.length && m===out[out.length-1]); out.push(m);} return out.map(m=>({m})); }
+  if(spec.kind==='interval'){ const out=[]; const mx=Math.max(...spec.intervals); for(let i=0;i<(spec.count||8);i++){ const iv=rnd(spec.intervals); const root=rint(low+1,Math.max(low+1,high-mx-1)); out.push({root, m:root+iv, iv}); } return out; }
   if(spec.pcs) return dedupe(spec.pcs).map(n=>({pc:pcOf(n), name:n}));
   const src = spec.rel || spec.midi;
   const lo=Math.min(...src), hi=Math.max(...src);
-  const shift = Math.round(mid-(lo+hi)/2); // centre the pattern in the singer's range
+  const shift = Math.round(mid-(lo+hi)/2);
   return dedupe(src.map(x=>x+shift)).map(m=>({m}));
 }
+function trainerLabel(spec){ return spec.label || (spec.kind==='match'?'Pitch matching':spec.kind==='range'?'Range finder':'Trainer'); }
 
-function mountTrainer(el, spec, {instrument=false, onFinish}={}){
-  stopLoops();
+function mountTrainer(el, spec, {instrument=false, unitId=null}={}){
+  if(loopOwner && loopOwner.el===el) stopLoops();
   if(spec.kind==='range') return mountRange(el);
-  const targets = buildTargets(spec, instrument);
-  let idx=0, hold=0, last=performance.now(), hits=0, skips=0, listening=false, finished=false;
-  const tol = instrument ? 0.45 : 0.4, holdMs = instrument ? 250 : 450;
+  const targets = buildTargets(spec);
+  const isHold = spec.kind==='hold', isIv = spec.kind==='interval';
+  const tol = instrument ? 0.45 : 0.4, holdMs = isHold ? spec.seconds*1000 : (instrument ? 220 : 420);
+  const autoRef = !instrument && (spec.kind==='match' || isIv || isHold);
+  let idx=0, hold=0, last=0, hits=0, skips=0, finished=false, cents=[], trace=[], helpShown=false;
   el.innerHTML = `<div class="trainer">
-    <div class="tr-head"><div><div class="tr-label">${esc(spec.label || (spec.kind==='match'?'Pitch matching':'Trainer'))}</div><div class="tr-sub" data-r="sub"></div></div>
-      <div class="tr-actions"><button class="btn" data-r="listen">🎤 Listen</button><button class="btn ghost" data-r="ref">▶ Play note</button></div></div>
+    <div class="tr-head"><div><div class="tr-label">${esc(trainerLabel(spec))}</div><div class="tr-sub" data-r="sub"></div></div>
+      <div class="tr-actions"><button class="btn" data-r="listen">Listen</button><button class="btn ghost" data-r="ref">► ${isIv?'Play root':'Play note'}</button>${isIv?'<button class="btn ghost" data-r="ans">► Answer</button>':''}${(!instrument&&!autoRef)?'<button class="btn ghost" data-r="all">► Hear it all</button>':''}</div></div>
+    ${micRowHTML}
     <div class="tr-target" data-r="target">–</div>
     <div class="meter"><div class="meter-zone"></div><div class="meter-needle" data-r="needle"></div><div class="meter-ticks"><span>flat</span><span>in tune</span><span>sharp</span></div></div>
-    <div class="tr-heard" data-r="heard">Tap Listen, then ${instrument?'play':'sing'} the note.</div>
-    <div class="chips" data-r="chips">${targets.map((t,i)=>`<span class="chip" data-i="${i}">${t.name?esc(t.name):midiName(t.m).replace(/\d+$/,'')}</span>`).join('')}</div>
+    <div class="holdbar"><i data-r="hold"></i></div>
+    <canvas class="trace" data-r="cv"></canvas>
+    <div class="chips" data-r="chips">${targets.map((t,i)=>`<span class="chip" data-i="${i}">${t.name?esc(t.name):midiName(t.m).replace(/-?\d+$/,'')}</span>`).join('')}</div>
     <div class="tr-foot"><button class="btn ghost sm" data-r="skip">Skip</button><button class="btn ghost sm" data-r="self">Got it ✓ (self-check)</button><button class="btn ghost sm" data-r="restart">Restart</button></div>
-    <div class="tr-msg" data-r="msg"></div></div>`;
+    <div class="tr-msg" data-r="msg">Tap Listen, then ${instrument?'play':'sing'} the note${isHold?` and hold it for ${spec.seconds} seconds`:''}.</div></div>`;
   const R = k=>el.querySelector(`[data-r="${k}"]`);
-  function targetLabel(t){
-    if(spec.kind==='interval') return `${INTERVAL_NAMES[t.iv]} above ${midiName(t.root)}`;
-    return t.name ? t.name : midiName(t.m);
-  }
-  function playRef(){ const t=targets[idx]; if(!t) return; if(spec.kind==='interval') playNote(t.root,1.4); else if(t.pc!==undefined) playNote(60+t.pc,1.2); else playNote(t.m,1.2); }
+  const cv=R('cv'), ctx=cv.getContext('2d'); const col={good:cssVar('--good')||'#2f7d4a', ink:cssVar('--ink')||'#222', band:cssVar('--goodbg')||'#e5f2e8', line:cssVar('--line')||'#ddd'};
+  const targetLabel = t => isIv ? `${INTERVAL_NAMES[t.iv]} above ${midiName(t.root)}` : (t.name ? t.name : midiName(t.m));
+  function playRef(){ const t=targets[idx]; if(!t) return; ac(); if(isIv) playNote(t.root,1.3); else if(t.pc!==undefined) playNote(60+t.pc,1.1); else playNote(t.m,1.1); }
   function show(){
     const t=targets[idx];
     el.querySelectorAll('.chip').forEach((c,i)=>{ c.classList.toggle('done',i<idx); c.classList.toggle('cur',i===idx); });
-    if(!t){ finished=true; R('target').textContent='Done'; R('sub').textContent=`${hits} matched · ${skips} skipped`; R('heard').textContent=''; stopLoops(); onFinish && onFinish({hits,skips,total:targets.length}); return; }
+    if(!t){ finish(); return; }
     R('target').textContent = targetLabel(t);
     R('sub').textContent = `${idx+1} of ${targets.length}` + (instrument?' · any octave counts':'');
   }
-  function advance(hit){ if(hit) hits++; else skips++; idx++; hold=0; show(); if(targets[idx] && (spec.kind==='match'||spec.kind==='interval')) setTimeout(playRef,350); }
-  function loop(){
-    const now=performance.now(), dt=now-last; last=now;
-    const r=Mic.read(); const t=targets[idx];
-    if(r && t){
-      if(r.freq>0){
-        const mf=freqToMidi(r.freq);
-        R('heard').textContent = `Hearing ${midiName(Math.round(mf))}`;
-        let diff;
-        if(t.pc!==undefined){ diff = mod(mf - t.pc + 6, 12) - 6; }
-        else diff = mf - t.m;
-        const cents = Math.max(-50,Math.min(50,diff*100));
-        const needle=R('needle'); needle.style.left = (50+cents)+'%';
-        needle.classList.toggle('good', Math.abs(diff)<tol);
-        if(Math.abs(diff)>=1){ R('msg').textContent = diff<0 ? `Too low by ${Math.round(-diff)} half step${Math.round(-diff)>1?'s':''}` : `Too high by ${Math.round(diff)} half step${Math.round(diff)>1?'s':''}`; }
-        else R('msg').textContent = Math.abs(diff)<tol ? 'Hold it…' : (diff<0?'A little flat':'A little sharp');
-        if(Math.abs(diff)<tol){ hold+=dt; if(hold>=holdMs){ R('target').classList.add('flash'); setTimeout(()=>R('target').classList.remove('flash'),300); R('msg').textContent='✓'; advance(true); } }
-        else hold=Math.max(0,hold-dt*0.5);
-      } else { R('heard').textContent='Listening…'; hold=Math.max(0,hold-dt); }
-    }
-    if(!finished) activeLoop=requestAnimationFrame(loop);
+  function finish(){
+    finished=true; const avg=cents.length?Math.round(cents.reduce((a,b)=>a+b,0)/cents.length):null;
+    R('target').textContent='Done'; R('sub').textContent=`${hits} matched · ${skips} skipped`;
+    const ratio=hits/targets.length; let verdict='';
+    if(avg!=null){ const r = ratio>=0.9&&avg<=20?3:ratio>=0.7&&avg<=32?2:1; verdict=` Suggested rating: ${RATING[r]}.`;
+      logMetric({k:instrument?'inst':'voice', u:unitId, label:trainerLabel(spec), cents:avg, hits, total:targets.length}); }
+    R('msg').textContent = avg!=null ? `Average error ${avg} cents while on the note (under 20 is good, over 35 is audibly off).${verdict}` : 'Self-checked: no pitch data recorded.';
+    if(loopOwner===owner) stopLoops();
   }
-  R('listen').onclick = async ()=>{
-    ac();
+  function advance(hit){ if(finished) return; if(hit) hits++; else skips++; idx++; hold=0; R('hold').style.width='0%'; show(); if(targets[idx] && autoRef && Mic.live()) setTimeout(playRef,450); }
+  function drawTrace(now){
+    const w=cv.clientWidth, hgt=cv.clientHeight, dpr=window.devicePixelRatio||1; if(!w) return;
+    if(cv.width!==Math.round(w*dpr)){ cv.width=Math.round(w*dpr); cv.height=Math.round(hgt*dpr); }
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,hgt);
+    const span=3, y=d=>hgt/2-(Math.max(-span,Math.min(span,d))/span)*(hgt/2-5);
+    ctx.fillStyle=col.band; ctx.fillRect(0,y(tol),w,y(-tol)-y(tol));
+    ctx.strokeStyle=col.line; ctx.lineWidth=1; [-2,-1,1,2].forEach(k=>{ ctx.beginPath(); ctx.moveTo(0,y(k)); ctx.lineTo(w,y(k)); ctx.stroke(); });
+    const win=5000; while(trace.length && now-trace[0].t>win) trace.shift();
+    for(const p of trace){ if(p.d==null) continue; ctx.fillStyle=Math.abs(p.d)<tol?col.good:col.ink; ctx.fillRect(w-(now-p.t)/win*w-1.5, y(p.d)-1.5, 3, 3); }
+  }
+  const owner={ el, onStop(){ const b=R('listen'); if(b){ b.disabled=false; b.textContent='Listen'; } const l=R('lvl'); if(l) l.style.width='0%'; const m=R('mstat'); if(m && !finished) m.textContent='Microphone paused'; } };
+  function frame(){
+    if(loopOwner!==owner) return;
+    if(!el.isConnected){ stopLoops(); return; }
+    const now=performance.now(), dt=Math.min(120, now-last); last=now;
+    const st=Mic.read(); const t=targets[idx];
+    if(!st || !st.live){ R('msg').textContent='The microphone stopped. Tap Listen to restart it.'; stopLoops(); return; }
+    R('lvl').style.width=Math.round(st.level*100)+'%';
+    R('mstat').textContent = micStatusText(st, st.midi!=null ? 'Hearing '+midiName(Math.round(st.midi)) : null);
+    if(st.silent && !helpShown){ helpShown=true; R('msg').innerHTML='The microphone is connected but sending silence. <button class="btn sm" data-r="remic">Restart microphone</button>'; R('remic').onclick=async()=>{ Mic.stop(); helpShown=false; await startListening(); }; }
+    let diff=null;
+    if(t && st.midi!=null){
+      diff = t.pc!==undefined ? mod(st.midi-t.pc+6,12)-6 : st.midi-t.m;
+      const c=Math.max(-50,Math.min(50,diff*100)); const needle=R('needle'); needle.style.left=(50+c)+'%';
+      const good=Math.abs(diff)<tol; needle.classList.toggle('good',good);
+      if(!helpShown || !st.silent){
+        const ad=Math.abs(diff);
+        if(t.pc===undefined && Math.abs(ad-12)<0.6) R('msg').textContent = diff<0 ? 'Right note, one octave too low' : 'Right note, one octave too high';
+        else if(ad>=0.95) R('msg').textContent = `Too ${diff<0?'low':'high'} by ${Math.round(ad)} half step${Math.round(ad)>1?'s':''}`;
+        else R('msg').textContent = good ? (isHold?'Hold it steady…':'Hold it…') : (diff<0?'A little flat':'A little sharp');
+      }
+      if(good){ hold+=dt; cents.push(Math.abs(diff*100)); if(hold>=holdMs){ const tg=R('target'); tg.classList.add('flash'); setTimeout(()=>tg.classList.remove('flash'),300); advance(true); } }
+      else hold=Math.max(0, hold-dt*(isHold?1.5:0.5));
+    } else if(!st.deaf) hold=Math.max(0, hold-dt*(isHold?0.4:1));
+    R('hold').style.width=Math.min(100,hold/holdMs*100)+'%';
+    trace.push({t:now, d:diff}); drawTrace(now);
+    if(!finished) loopRAF=requestAnimationFrame(frame);
+  }
+  async function startListening(){
+    ac(); const btn=R('listen'); btn.disabled=true; btn.textContent='Starting…';
     const ok = await Mic.start();
-    if(!ok){ R('msg').innerHTML = micBlockedMsg(); return; }
-    listening=true; R('listen').textContent='🎤 On'; R('listen').disabled=true; last=performance.now(); stopLoops(); activeLoop=requestAnimationFrame(loop);
-    if(idx===0) playRef();
-  };
-  R('ref').onclick = ()=>playRef();
+    if(!ok){ btn.disabled=false; btn.textContent='Listen'; R('msg').innerHTML = micErrorMsg(); return; }
+    stopLoops(); loopOwner=owner; btn.disabled=true; btn.textContent='Listening'; last=performance.now(); helpShown=false;
+    if(R('msg').textContent.startsWith('Tap Listen')) R('msg').textContent='';
+    loopRAF=requestAnimationFrame(frame);
+    if(autoRef && !finished) playRef();
+  }
+  R('listen').onclick = startListening;
+  R('ref').onclick = playRef;
+  if(R('ans')) R('ans').onclick = ()=>{ const t=targets[idx]; if(t){ ac(); playNote(t.m,1.2); } };
+  if(R('all')) R('all').onclick = ()=>{ ac(); targets.slice(idx).forEach((t,i)=>playNote(t.m,0.6,i*0.55)); };
   R('skip').onclick = ()=>advance(false);
   R('self').onclick = ()=>advance(true);
-  R('restart').onclick = ()=>mountTrainer(el, spec, {instrument, onFinish});
-  show();
+  R('restart').onclick = ()=>mountTrainer(el, spec, {instrument, unitId});
+  show(); drawTrace(performance.now());
 }
-function micBlockedMsg(){
-  return `<b>Microphone unavailable here.</b> Claude's artifact viewer blocks microphone access, so live pitch checking only works in the standalone copy of this app opened in Safari. Until then: play the note, sing or play it, and use <i>Got it</i> to self-check.`;
+function simpleMicLoop(el, R, onRead){
+  const owner={ el, onStop(){ const b=R('listen'); if(b){ b.disabled=false; b.textContent='Listen'; } } };
+  function frame(){ if(loopOwner!==owner) return; if(!el.isConnected){ stopLoops(); return; }
+    const st=Mic.read(); if(!st||!st.live){ R('msg').textContent='The microphone stopped. Tap Listen to restart it.'; stopLoops(); return; }
+    const l=R('lvl'); if(l) l.style.width=Math.round(st.level*100)+'%';
+    const m=R('mstat'); if(m) m.textContent=micStatusText(st, st.midi!=null?'Hearing '+midiName(Math.round(st.midi)):null);
+    onRead(st); loopRAF=requestAnimationFrame(frame); }
+  R('listen').onclick=async()=>{ ac(); const b=R('listen'); b.disabled=true; b.textContent='Starting…';
+    if(!(await Mic.start())){ b.disabled=false; b.textContent='Listen'; R('msg').innerHTML=micErrorMsg(); return; }
+    stopLoops(); loopOwner=owner; b.textContent='Listening'; R('msg').textContent=''; loopRAF=requestAnimationFrame(frame); };
 }
 function mountRange(el){
-  stopLoops();
   let cur=null;
-  el.innerHTML = `<div class="trainer"><div class="tr-head"><div><div class="tr-label">Range finder</div><div class="tr-sub">Slide (siren) slowly to your lowest comfortable note, tap Set lowest. Then up to your highest comfortable note (not strained), tap Set highest.</div></div>
-    <div class="tr-actions"><button class="btn" data-r="listen">🎤 Listen</button></div></div>
+  el.innerHTML = `<div class="trainer"><div class="tr-head"><div><div class="tr-label">Range finder</div><div class="tr-sub">Slide slowly down to your lowest comfortable note and tap Set lowest. Then up to your highest comfortable note (not strained) and tap Set highest.</div></div>
+    <div class="tr-actions"><button class="btn" data-r="listen">Listen</button></div></div>${micRowHTML}
     <div class="tr-target" data-r="target">–</div>
     <div class="tr-foot"><button class="btn" data-r="lo">Set lowest</button><button class="btn" data-r="hi">Set highest</button></div>
-    <div class="tr-heard">Saved range: <b data-r="saved">${midiName(S.range.low)} – ${midiName(S.range.high)}</b> (${S.range.high-S.range.low} half steps)</div>
+    <div class="tr-heard">Saved range: <b data-r="saved">${midiName(S.range.low)} – ${midiName(S.range.high)}</b></div>
     <div class="tr-msg" data-r="msg"></div></div>`;
   const R=k=>el.querySelector(`[data-r="${k}"]`);
-  function loop(){ const r=Mic.read(); if(r&&r.freq>0){ cur=Math.round(freqToMidi(r.freq)); R('target').textContent=midiName(cur);} activeLoop=requestAnimationFrame(loop); }
-  R('listen').onclick=async()=>{ ac(); if(!(await Mic.start())){ R('msg').innerHTML=micBlockedMsg()+' You can also set your range manually under Progress → Settings.'; return; } R('listen').disabled=true; loop(); };
+  simpleMicLoop(el, R, st=>{ if(st.midi!=null){ cur=Math.round(st.midi); R('target').textContent=midiName(cur); } });
   const upd=()=>{ R('saved').textContent=`${midiName(S.range.low)} – ${midiName(S.range.high)}`; save(); };
   R('lo').onclick=()=>{ if(cur!=null && cur<S.range.high-4){ S.range.low=cur; upd(); } };
   R('hi').onclick=()=>{ if(cur!=null && cur>S.range.low+4){ S.range.high=cur; upd(); } };
 }
+function mountTuner(c){
+  const STR=[[40,'low E'],[45,'A'],[50,'D'],[55,'G'],[59,'B'],[64,'high E']];
+  c.innerHTML=`<h2>Tuner and pitch meter</h2><p class="small">Play one guitar string, or sing a note. For guitar it shows the nearest string and which way to turn.</p>
+    <div class="tr-actions"><button class="btn" data-r="listen">Listen</button></div>${micRowHTML}<div class="tr-target" data-r="n">–</div>
+    <div class="meter"><div class="meter-zone"></div><div class="meter-needle" data-r="needle"></div><div class="meter-ticks"><span>flat</span><span>in tune</span><span>sharp</span></div></div><div class="tr-heard" data-r="hz"></div><div class="tr-msg" data-r="msg"></div>`;
+  const R=k=>c.querySelector(`[data-r="${k}"]`);
+  simpleMicLoop(c, R, st=>{ if(st.midi==null) return; const n=Math.round(st.midi), cents=Math.round((st.midi-n)*100);
+    R('n').textContent=midiName(n); R('needle').style.left=(50+cents)+'%'; R('needle').classList.toggle('good',Math.abs(cents)<8);
+    const near=STR.slice().sort((a,b)=>Math.abs(a[0]-st.midi)-Math.abs(b[0]-st.midi))[0]; const d=st.midi-near[0];
+    R('hz').textContent=`${st.freq.toFixed(1)} Hz · ${cents>0?'+':''}${cents} cents` + (Math.abs(d)<1.5 ? ` · ${near[1]} string: ${Math.abs(d)<0.08?'in tune':d<0?'tune up':'tune down'}` : ''); });
+}
+function mountMicCheck(c){
+  c.innerHTML=`<h2>Microphone check</h2><p class="small">Tap Listen and make a steady sound. If the level bar moves and a note appears, pitch checking will work. If not, tap Copy report and send it to Claude.</p>
+    <div class="tr-actions"><button class="btn" data-r="listen">Listen</button><button class="btn ghost" data-r="re">Restart microphone</button><button class="btn ghost" data-r="copy">Copy report</button></div>${micRowHTML}
+    <pre class="report" data-r="rep">Not started.</pre><div class="tr-msg" data-r="msg"></div>`;
+  const R=k=>c.querySelector(`[data-r="${k}"]`); let perm='unknown', maxLevel=0, heard=0;
+  try{ navigator.permissions.query({name:'microphone'}).then(p=>perm=p.state).catch(()=>{}); }catch(e){}
+  const report=st=>{ let tr={}, lab=''; try{ const t=Mic.stream.getAudioTracks()[0]; tr=t.getSettings?t.getSettings():{}; lab=t.label; }catch(e){}
+    if(st){ maxLevel=Math.max(maxLevel,st.rms); if(st.midi!=null) heard++; }
+    return [`${BUILD}`,`Page: ${location.hostname||'file'} · secure: ${window.isSecureContext}`,`Permission: ${perm}`,`Input: ${lab||'?'} · ${tr.sampleRate||'?'} Hz · echoCancel ${tr.echoCancellation} · autoGain ${tr.autoGainControl}`,
+      `Audio engine: ${AC?AC.state:'none'} · ${AC?AC.sampleRate:'?'} Hz · rebuilt ${Mic.rebuilds}×`,
+      st?`Level now: ${st.rms>0?(20*Math.log10(st.rms)).toFixed(0):'-inf'} dB · loudest: ${maxLevel>0?(20*Math.log10(maxLevel)).toFixed(0):'-inf'} dB · silent: ${st.silent}`:'',
+      st?`Clarity: ${st.clarity.toFixed(2)} · note: ${st.midi!=null?midiName(Math.round(st.midi))+' ('+st.freq.toFixed(1)+' Hz)':'none'} · frames with a note: ${heard}`:''].filter(Boolean).join('\n'); };
+  simpleMicLoop(c, R, st=>{ R('rep').textContent=report(st); });
+  R('re').onclick=async()=>{ stopLoops(); Mic.stop(); R('listen').click(); };
+  R('copy').onclick=async()=>{ const txt=R('rep').textContent+(Mic.err?`\nError: ${Mic.err.name} ${Mic.err.message||''}`:''); try{ await navigator.clipboard.writeText(txt); R('msg').textContent='Copied.'; }catch(e){ R('msg').textContent='Clipboard blocked: select the text above and copy it.'; } };
+}
 
 // ===== EAR TRAINER =====
-function mountEar(el, spec, {count=6, label='Ear training', onFinish}={}){
+function mountEar(el, spec, {count=6, label='Ear training'}={}){
   let n=0, score=0, cur=null, answered=false;
-  const isQ = !!spec.qualities;
-  const choices = isQ ? spec.qualities : spec.intervals;
+  const isQ = !!spec.qualities; const choices = isQ ? spec.qualities : spec.intervals;
   const nameOf = c => isQ ? QUALITY_NAME[c] : INTERVAL_NAMES[c];
-  el.innerHTML = `<div class="ear"><div class="tr-head"><div><div class="tr-label">${esc(label)}</div><div class="tr-sub" data-r="sub"></div></div><button class="btn" data-r="play">▶ Play</button></div>
+  el.innerHTML = `<div class="ear"><div class="tr-head"><div><div class="tr-label">${esc(label)}</div><div class="tr-sub" data-r="sub"></div></div><button class="btn" data-r="play">► Play</button></div>
     <div class="opts" data-r="opts"></div><div class="tr-msg" data-r="msg"></div><button class="btn ghost sm" data-r="next" hidden>Next →</button></div>`;
   const R=k=>el.querySelector(`[data-r="${k}"]`);
   function play(){ if(!cur) return; if(isQ){ const ms=CHORD_FORMULAS[cur.c].map(([s])=>cur.root+s); playChordMidi(ms,1.6,0); setTimeout(()=>playChordMidi(ms,1.4,0.12),1700);} else { playNote(cur.root,0.9); playNote(cur.root+cur.c,1.1,0.75); } }
   function newQ(){
-    if(n>=count){ R('sub').textContent=`Score ${score}/${count}`; R('opts').innerHTML=''; R('play').hidden=true; R('next').hidden=true; R('msg').textContent= score>=count*0.8?'Solid.':score>=count*0.5?'Getting there.':'Needs work: repeat this tomorrow.'; onFinish&&onFinish({score,count}); return; }
+    if(n>=count){ R('sub').textContent=`Score ${score}/${count}`; R('opts').innerHTML=''; R('play').hidden=true; R('next').hidden=true;
+      R('msg').textContent= score>=count*0.8?'Solid.':score>=count*0.5?'Partial: a weakness until it is 5 of 6.':'A clear gap. Repeat this tomorrow.'; logMetric({k:'ear',label,score,total:count}); return; }
     cur={c:rnd(choices), root:48+Math.floor(Math.random()*12)}; answered=false; n++;
     R('sub').textContent=`${n} of ${count} · score ${score}`;
     R('opts').innerHTML = choices.map(c=>`<button class="opt" data-c="${c}">${esc(nameOf(c))}</button>`).join('');
@@ -815,16 +1326,17 @@ function mountEar(el, spec, {count=6, label='Ear training', onFinish}={}){
 }
 
 // ===== THEORY QUIZ =====
-function mountQuiz(el, gens, {count=5, onFinish}={}){
+function mountQuiz(el, gens, {count=5, review=[], onFinish}={}){
   let n=0, score=0, q=null;
   el.innerHTML=`<div class="quiz"><div class="tr-sub" data-r="sub"></div><div class="qq" data-r="q"></div><div class="opts col" data-r="opts"></div><div class="tr-msg" data-r="msg"></div><button class="btn ghost sm" data-r="next" hidden>Next →</button></div>`;
   const R=k=>el.querySelector(`[data-r="${k}"]`);
   function next(){
     if(n>=count){ R('q').textContent=`Score: ${score}/${count}`; R('opts').innerHTML=''; R('next').hidden=true; R('sub').textContent='';
-      R('msg').textContent = score===count?'Clean.':score>=count*0.6?'Pass, with gaps. Re-read the concept for the ones you missed.':'Not there yet. Re-read the concept and retake.';
-      onFinish&&onFinish({score,count}); return; }
-    q=QUIZ[rnd(gens)](); n++;
-    R('sub').textContent=`Question ${n} of ${count}`; R('q').textContent=q.q; R('msg').textContent=''; R('next').hidden=true;
+      R('msg').textContent = score===count?'Clean.':score>=count*0.6?'Pass with gaps. Re-read the concept for what you missed.':'Not there yet. Re-read the concept and retake.';
+      logMetric({k:'quiz',score,total:count}); onFinish&&onFinish({score,count}); return; }
+    const isRev = review.length && n>0 && Math.random()<0.25;
+    q=QUIZ[rnd(isRev?review:gens)](); n++;
+    R('sub').textContent=`Question ${n} of ${count}${isRev?' · review from an earlier unit':''}`; R('q').textContent=q.q; R('msg').textContent=''; R('next').hidden=true;
     R('opts').innerHTML=q.options.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('');
     R('opts').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{ if(R('next').hidden===false) return; const o=q.options[+b.dataset.i]; const ok=o===q.answer; if(ok) score++;
       b.classList.add(ok?'right':'wrong'); if(!ok) [...R('opts').children].find(x=>x.textContent===q.answer).classList.add('right');
@@ -833,21 +1345,127 @@ function mountQuiz(el, gens, {count=5, onFinish}={}){
   R('next').onclick=next; next();
 }
 
-// ===== METRONOME WIDGET =====
+// ===== METRONOME =====
+const Metro = { bpm:70, beats:4 };
 function mountMetro(el, bpm){
   if(bpm) Metro.bpm=bpm;
-  el.innerHTML=`<div class="metro"><button class="btn" data-r="go">${Metro.on?'■ Stop':'▶ Metronome'}</button>
+  el.innerHTML=`<div class="metro"><button class="btn" data-r="go">► Metronome</button>
     <button class="btn ghost sm" data-r="dn">−5</button><span class="bpm" data-r="bpm">${Metro.bpm} bpm</span><button class="btn ghost sm" data-r="up">+5</button>
-    <select data-r="beats">${[2,3,4,6].map(b=>`<option value="${b}" ${b===Metro.beats?'selected':''}>${b}/4</option>`).join('')}</select>
-    <span class="beats" data-r="dots">${Array.from({length:Metro.beats},()=>'<i></i>').join('')}</span></div>`;
+    <select data-r="beats">${[2,3,4,6].map(b=>`<option value="${b}" ${b===Metro.beats?'selected':''}>${b} beats</option>`).join('')}</select>
+    <span class="beats" data-r="dots"></span></div>`;
   const R=k=>el.querySelector(`[data-r="${k}"]`);
-  const drawDots=()=>{ R('dots').innerHTML=Array.from({length:Metro.beats},()=>'<i></i>').join(''); };
-  R('go').onclick=()=>{ Metro.toggle(); R('go').textContent=Metro.on?'■ Stop':'▶ Metronome'; };
+  const drawDots=()=>{ R('dots').innerHTML=Array.from({length:Metro.beats},()=>'<i></i>').join(''); }; drawDots();
+  const sched=new Sched({ onStep(i,t,perf){ this.bpm=Metro.bpm; const b=i%Metro.beats; tickAt(t,b===0?2400:1900,b===0?0.5:0.3); at(perf,()=>{ if(el.isConnected) el.querySelectorAll('.beats i').forEach((d,k)=>d.classList.toggle('on',k===b)); }); },
+    onStop(){ if(el.isConnected){ R('go').textContent='► Metronome'; el.querySelectorAll('.beats i').forEach(d=>d.classList.remove('on')); } } });
+  R('go').onclick=()=>{ if(sched.on) sched.stop(); else { sched.bpm=Metro.bpm; sched.start(); R('go').textContent='■ Stop'; } };
   R('dn').onclick=()=>{ Metro.bpm=Math.max(30,Metro.bpm-5); R('bpm').textContent=Metro.bpm+' bpm'; };
   R('up').onclick=()=>{ Metro.bpm=Math.min(220,Metro.bpm+5); R('bpm').textContent=Metro.bpm+' bpm'; };
   R('beats').onchange=e=>{ Metro.beats=+e.target.value; drawDots(); };
-  const fn=b=>{ if(!el.isConnected) return; el.querySelectorAll('.beats i').forEach((d,i)=>d.classList.toggle('on',i===b)); };
-  Metro.listeners=[fn];
+}
+
+// ===== RHYTHM TRAINER =====
+function mountRhythm(el, keys, {unitId=null}={}){
+  let key=keys[0], pat=RHYTHMS[key], bpm=pat.bpm, sched=null, expected=[], taps=[], testing=false;
+  el.innerHTML=`<div class="rhythm">${keys.length>1?`<div class="tabs-mini">${keys.map(k=>`<button class="pill" data-k="${k}">${esc(RHYTHMS[k].label)}</button>`).join('')}</div>`:`<div class="tr-label" data-r="lab"></div>`}
+    <div class="rgrid" data-r="grid"></div>
+    <div class="row"><button class="btn" data-r="play">► Play along</button><button class="btn ghost" data-r="test">Tap test</button><button class="btn ghost sm" data-r="dn">−5</button><span class="bpm" data-r="bpm"></span><button class="btn ghost sm" data-r="up">+5</button></div>
+    <button class="tappad" data-r="pad" hidden>TAP HERE</button><div class="tr-msg" data-r="msg"></div></div>`;
+  const R=k=>el.querySelector(`[data-r="${k}"]`);
+  const isUp=i=>pat.spb>1 && i%2===1;
+  function draw(){
+    const n=pat.slots.length; R('bpm').textContent=bpm+' bpm'; if(R('lab')) R('lab').textContent=pat.label;
+    el.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p.dataset.k===key));
+    const g=R('grid'); g.style.gridTemplateColumns=`repeat(${n},1fr)`;
+    g.innerHTML=pat.slots.map((s,i)=>{ const sub=i%pat.spb, beat=Math.floor(i/pat.spb); const lab=sub===0?beat+1:(pat.spb===2?'&':['','e','&','a'][sub]);
+      const sym=!s?'·':(pat.strum===false?'●':(isUp(i)?'↑':'↓'));
+      return `<div class="rc${sub===0?' b':''}${s?' act':''}" data-i="${i}"><span class="ra">${sym}</span><span class="rl">${lab}</span></div>`; }).join('');
+  }
+  const hl=k=>{ if(!el.isConnected) return; el.querySelectorAll('.rc').forEach((c,i)=>c.classList.toggle('now',i===k)); };
+  function reset(){ testing=false; R('pad').hidden=true; R('play').textContent='► Play along'; R('test').textContent='Tap test'; hl(-1); }
+  function stop(){ if(sched && sched.on) sched.stop(); }
+  function start(test){
+    stop(); const n=pat.slots.length; expected=[]; taps=[]; testing=test;
+    sched=new Sched({bpm, spb:pat.spb, swing:!!pat.swing,
+      onStep(i,t,perf){ const k=i%n;
+        if(test && i>=5*n){ at(perf+200, ()=>{ stop(); evaluate(); }); this.on=false; clearInterval(this.timer); if(Sched.active===this) Sched.active=null; return; }
+        if(k%pat.spb===0) tickAt(t, k===0?2400:1900, k===0?0.4:0.22);
+        if(!test){ if(pat.slots[k]) chkAt(t,0.3,isUp(k)); }
+        else if(i>=n && pat.slots[k]) expected.push(perf+outLatencyMs());
+        at(perf,()=>{ hl(k); if(test && el.isConnected) R('msg').textContent = i<n ? 'Count-in: listen for one bar' : `Bar ${Math.floor(i/n)} of 4: tap the arrows`; }); },
+      onStop(){ testing=false; if(el.isConnected) reset(); }});
+    if(test){ R('pad').hidden=false; R('test').textContent='■ Cancel'; R('play').textContent='► Play along'; } else { R('play').textContent='■ Stop'; R('msg').textContent='Strum or tap along. Keep the hand moving through the dots.'; }
+    sched.start();
+  }
+  function evaluate(){
+    reset(); if(!expected.length) return;
+    const used=new Set(), offs=[]; const half=Math.min(180, 60000/bpm/pat.spb*0.5);
+    for(const tp of taps){ let best=-1, bd=1e9; expected.forEach((ex,j)=>{ if(used.has(j)) return; const d=tp-ex; if(Math.abs(d)<Math.abs(bd)){ bd=d; best=j; } }); if(best>=0 && Math.abs(bd)<=half){ used.add(best); offs.push(bd); } }
+    const hits=offs.length, extra=taps.length-hits, total=expected.length;
+    if(!hits){ R('msg').textContent=`No taps landed on the pattern (${taps.length} taps). Watch one bar with Play along, then try again.`; return; }
+    const sorted=offs.slice().sort((a,b)=>a-b), bias=sorted[Math.floor(sorted.length/2)];
+    const spread=Math.round(offs.reduce((a,b)=>a+Math.abs(b-bias),0)/hits);
+    const ratio=hits/total; const r = ratio>=0.9&&extra<=1&&spread<=35?3:ratio>=0.75&&spread<=60?2:1;
+    R('msg').innerHTML=`<b>${hits}/${total}</b> on the pattern${extra>0?`, ${extra} extra tap${extra>1?'s':''}`:''}. Consistency <b>±${spread} ms</b> (under 35 is tight). On average ${Math.abs(Math.round(bias))} ms ${bias<0?'early':'late'}; a steady offset is partly device delay, so judge the consistency figure. Verdict: <b>${RATING[r]}</b>.`;
+    logMetric({k:'rhythm', u:unitId, label:pat.label, spread, hits, total, bpm});
+    const bk='rh_'+key; if(ratio>=0.9 && (S.bests[bk]==null || spread<S.bests[bk])){ S.bests[bk]=spread; save(); }
+  }
+  R('pad').addEventListener('pointerdown', e=>{ e.preventDefault(); const now=performance.now(); const ts=(e.timeStamp>0 && Math.abs(e.timeStamp-now)<500)?e.timeStamp:now; taps.push(ts); const p=R('pad'); p.classList.add('hit'); setTimeout(()=>p.classList.remove('hit'),80); });
+  R('play').onclick=()=>{ if(sched && sched.on && !testing) stop(); else start(false); };
+  R('test').onclick=()=>{ if(testing){ testing=false; stop(); reset(); R('msg').textContent=''; } else start(true); };
+  R('dn').onclick=()=>{ bpm=Math.max(30,bpm-5); if(sched) sched.bpm=bpm; R('bpm').textContent=bpm+' bpm'; };
+  R('up').onclick=()=>{ bpm=Math.min(200,bpm+5); if(sched) sched.bpm=bpm; R('bpm').textContent=bpm+' bpm'; };
+  el.querySelectorAll('.pill').forEach(p=>p.onclick=()=>{ testing=false; stop(); key=p.dataset.k; pat=RHYTHMS[key]; bpm=pat.bpm; reset(); R('msg').textContent=''; draw(); });
+  draw();
+}
+
+// ===== BACKING LOOPS =====
+function mountLoop(el, loops){
+  let cur=0, bpm=loops[0].bpm, click=true, sched=null;
+  el.innerHTML=`<div class="loop">${loops.length>1?`<div class="tabs-mini">${loops.map((l,i)=>`<button class="pill" data-l="${i}">${esc(l.label)}</button>`).join('')}</div>`:`<div class="tr-label">${esc(loops[0].label)}</div>`}
+    <div class="strip" data-r="strip"></div>
+    <div class="row"><button class="btn" data-r="go">► Play backing</button><button class="btn ghost sm" data-r="dn">−5</button><span class="bpm" data-r="bpm"></span><button class="btn ghost sm" data-r="up">+5</button>
+    <label class="chk"><input type="checkbox" data-r="click" checked> click</label></div>
+    <p class="small">Pitch checking pauses while the backing plays through the speaker (the microphone would hear it). With headphones, turn on the headphones setting under Progress.</p></div>`;
+  const R=k=>el.querySelector(`[data-r="${k}"]`);
+  function draw(){ const L=loops[cur]; R('bpm').textContent=bpm+' bpm'; el.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',+p.dataset.l===cur));
+    R('strip').innerHTML=L.chords.map((c,i)=>`<span class="sc" data-i="${i}">${esc(c)}</span>`).join(''); }
+  const hl=k=>{ if(el.isConnected) el.querySelectorAll('.sc').forEach((c,i)=>c.classList.toggle('now',i===k)); };
+  function stop(){ if(sched && sched.on) sched.stop(); }
+  function start(){
+    const L=loops[cur], beats=L.beats||4, per=L.per||beats;
+    sched=new Sched({bpm, spb:2, swing:!!L.swing,
+      onStep(i,t,perf){ const beat=Math.floor(i/2), sub=i%2, ci=Math.floor(beat/per)%L.chords.length, bic=beat%per, name=L.chords[ci];
+        const bd=60/this.bpm, when=Math.max(0,t-AC.currentTime), p=parseChord(name); if(!p) return;
+        const voicing=chordPcs(name).map(pc=>55+mod(pc-55,12));
+        if(sub===0){
+          const bpc=pcOf(p.bass||p.root), bass=36+bpc+(bpc<4?12:0);
+          if(bic===0) playNote(bass, bd*1.5, when, 0.36); else if(per>=4 && bic===2) playNote(bass, bd*0.9, when, 0.22);
+          voicing.forEach(m=>playNote(m, bd*0.6, when, bic===0?0.11:0.075));
+          if(click) tickAt(t, bic===0?2600:2200, bic===0?0.1:0.05);
+          if(bic===0) at(perf,()=>hl(ci));
+        } else if(L.swing){ voicing.forEach(m=>playNote(m, bd*0.25, when, 0.04)); }
+        gateMic(bd*1.2); },
+      onStop(){ if(el.isConnected){ R('go').textContent='► Play backing'; hl(-1); } }});
+    sched.start(); R('go').textContent='■ Stop';
+  }
+  R('go').onclick=()=>{ if(sched && sched.on) stop(); else start(); };
+  R('dn').onclick=()=>{ bpm=Math.max(40,bpm-5); if(sched) sched.bpm=bpm; R('bpm').textContent=bpm+' bpm'; };
+  R('up').onclick=()=>{ bpm=Math.min(180,bpm+5); if(sched) sched.bpm=bpm; R('bpm').textContent=bpm+' bpm'; };
+  R('click').onchange=e=>{ click=e.target.checked; };
+  el.querySelectorAll('.pill').forEach(p=>p.onclick=()=>{ stop(); cur=+p.dataset.l; bpm=loops[cur].bpm; draw(); });
+  draw();
+}
+function mountDrone(c){
+  c.innerHTML=`<h2>Drone</h2><p class="small">A sustained home note to sing or play scales against. Pitch checking pauses while it sounds unless the headphones setting is on.</p>
+    <div class="opts" data-r="notes">${SHARP.map((n,i)=>`<button class="opt" data-pc="${i}">${enh(n)}</button>`).join('')}</div>
+    <div class="row"><button class="btn" data-r="stop">■ Stop</button><label class="chk"><input type="checkbox" data-r="fifth" checked> add the 5th</label></div>`;
+  const R=k=>c.querySelector(`[data-r="${k}"]`);
+  c.querySelectorAll('[data-pc]').forEach(b=>b.onclick=()=>{ c.querySelectorAll('[data-pc]').forEach(x=>x.classList.remove('right')); b.classList.add('right'); Sched.stopAll(); Drone.start(+b.dataset.pc, R('fifth').checked); });
+  R('stop').onclick=()=>{ Drone.stop(); c.querySelectorAll('[data-pc]').forEach(x=>x.classList.remove('right')); };
+}
+function mountKeyboard(c){
+  c.innerHTML=`<h2>Keyboard</h2><p class="small">Tap keys to hear notes when you are away from the piano.</p><div data-r="k">${keysSVG({from:48,to:72,interactive:true})}</div><div class="tr-target" data-r="n">–</div>`;
+  c.querySelectorAll('[data-m]').forEach(k=>k.addEventListener('pointerdown',e=>{ e.preventDefault(); const m=+k.dataset.m; ac(); playNote(m,1.4,0,0.34); c.querySelector('[data-r="n"]').textContent=midiName(m); k.classList.add('on'); setTimeout(()=>k.classList.remove('on'),220); }));
 }
 
 // ===== SESSION PLANNER =====
@@ -857,7 +1475,6 @@ function planSession(minutes){
   let strands = STRANDS.slice();
   if(minutes<20){ const tech = n%2===0?'guitar':'piano'; strands=['voice','theory',tech,'songs']; }
   const w={}; strands.forEach(s=>w[s]=BASE_W[s]);
-  // weakest strand gets extra time
   const avgs = strands.map(s=>[s, strandAvg(u,s)]).filter(x=>x[1]!=null);
   let weakest=null;
   if(avgs.length>=2){ avgs.sort((a,b)=>a[1]-b[1]); if(avgs[0][1] < avgs[avgs.length-1][1]) weakest=avgs[0][0]; }
@@ -872,85 +1489,78 @@ function planSession(minutes){
   const review = n>0 && n%4===3 && unitIndex(u)>0;
   const unit=unitById(u);
   const songIdx = (S.bests['songi_'+u]||0) % unit.songs.length;
-  return { minutes, unit:u, created:Date.now(), weakest, review, songIdx,
-    blocks: blocks.map(b=>({...b, done:false, rating:null, elapsed:0})) };
+  return { minutes, unit:u, created:Date.now(), weakest, review, songIdx, blocks: blocks.map(b=>({...b, done:false, rating:null, elapsed:0})) };
 }
 
 // ===== VIEWS =====
 let view = 'today', courseUnit=null, openBlock=null, toolView=null;
-function setView(v){ stopLoops(); if(Metro.on) {} view=v; openBlock=null; courseUnit=null; toolView=null; render(); window.scrollTo(0,0); }
-
+function setView(v){ leave(); view=v; openBlock=null; courseUnit=null; toolView=null; render(); window.scrollTo(0,0); }
 function render(){
   const app=$('#app');
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.v===view));
-  if(!S.placed){ app.innerHTML=''; app.appendChild(placementView()); return; }
   app.innerHTML='';
-  const v = view==='today' ? todayView() : view==='course' ? courseView() : view==='tools' ? toolsView() : progressView();
-  app.appendChild(v);
+  if(!S.placed){ app.appendChild(placementView()); return; }
+  app.appendChild(view==='today' ? todayView() : view==='course' ? courseView() : view==='tools' ? toolsView() : progressView());
 }
-
+function rangeSel(which,label,val){
+  let o=''; for(let m=36;m<=84;m++) o+=`<option value="${m}" ${m===val?'selected':''}>${midiName(m)}</option>`;
+  return `<label class="sel">${label} <select data-range="${which}">${o}</select></label>`;
+}
 function placementView(){
+  const plQ=(k,label,opts)=>`<div class="plq"><div class="pl-l">${label}</div>${opts.map((o,i)=>`<label class="radio"><input type="radio" name="${k}" value="${i}" ${S.levels[k]===i?'checked':''}> ${o}</label>`).join('')}</div>`;
   const el=h(`<section class="card placement"><h1>Set your starting point</h1>
-    <p class="lead">Be honest; it sets where the course starts and where your extra practice time goes. You can change all of this later.</p>
+    <p class="lead">Be honest; it sets where the course starts and where the extra practice time goes. All of this can be changed later.</p>
     <div class="pl-grid">
       ${plQ('guitar','Guitar',['Never played','Know some open chords','Comfortable with open chords and strumming','Barre chords and beyond'])}
       ${plQ('piano','Piano',['Never played','Can pick out a melody','Basic two-handed playing'])}
       ${plQ('voice','Singing',['Struggle to match notes','Can match notes, unreliable','Fairly reliable in tune'])}
       ${plQ('theory','Theory',['None','Know note names and some chords','Know scales, keys and chord numbers'])}
     </div>
-    <h3>Vocal range</h3><p class="small">Default suits most male voices. You'll measure it properly with the range finder in Unit 11 (or in Tools any time).</p>
+    <h3>Vocal range</h3><p class="small">The default suits most male voices. Measure yours with the range finder under Tools.</p>
     <div class="row">${rangeSel('low','Lowest',S.range.low)} ${rangeSel('high','Highest',S.range.high)}</div>
     <button class="btn big" data-r="go">Start the course</button></section>`);
-  function plQ(k,label,opts){ return `<div class="plq"><div class="pl-l">${label}</div>${opts.map((o,i)=>`<label class="radio"><input type="radio" name="${k}" value="${i}" ${S.levels[k]===i?'checked':''}> ${o}</label>`).join('')}</div>`; }
   el.querySelector('[data-r="go"]').onclick=()=>{
     ['guitar','piano','voice','theory'].forEach(k=>{ const r=el.querySelector(`input[name="${k}"]:checked`); if(r) S.levels[k]=+r.value; });
     S.range.low=+el.querySelector('[data-range="low"]').value; S.range.high=+el.querySelector('[data-range="high"]').value;
-    S.unit = S.levels.theory>=2 ? 'u3' : 'u1';
+    if(!S.sessions.length) S.unit = S.levels.theory>=2 ? 'u3' : 'u1';
     S.placed=true; save(); view='today'; render();
   };
   return el;
 }
-function rangeSel(which,label,val){
-  let o=''; for(let m=36;m<=84;m++) o+=`<option value="${m}" ${m===val?'selected':''}>${midiName(m)}</option>`;
-  return `<label class="sel">${label} <select data-range="${which}">${o}</select></label>`;
-}
 
 // ----- TODAY -----
 function todayView(){
-  const u=unitById(S.unit); const sess=S.session;
+  const u=unitById(S.unit)||CURRICULUM[0]; const sess=S.session;
   const wrap=h(`<div></div>`);
   if(openBlock!=null && sess){ wrap.appendChild(blockView(sess, openBlock)); return wrap; }
-  const ready=unitReady(u.id);
+  const ready=unitReady(u.id), isLast=unitIndex(u.id)===CURRICULUM.length-1;
   wrap.appendChild(h(`<section class="card hero"><div class="eyebrow">${esc(u.stage)} · Unit ${unitIndex(u.id)+1} of ${CURRICULUM.length}</div>
     <h1>${esc(u.title)}</h1>
-    <div class="strandbar">${STRANDS.map(s=>{const a=strandAvg(u.id,s); return `<div class="sb"><span>${STRAND_LABEL[s]}</span><b class="lvl l${a==null?0:Math.round(a)}">${a==null?'–':a.toFixed(1)}</b></div>`;}).join('')}</div>
-    ${ready?`<div class="note good">Every strand is rated solid. Advance when you're ready. <button class="btn sm" data-act="advance">Advance to next unit</button></div>`:''}
+    <div class="strandbar">${STRANDS.map(s=>{const a=strandAvg(u.id,s); return `<div class="sb"><span>${STRAND_LABEL[s]}</span><b class="lvl-n l${a==null?0:Math.round(a)}">${a==null?'–':a.toFixed(1)}</b></div>`;}).join('')}</div>
+    ${ready&&!isLast?`<div class="note good">Every strand is rated solid. <button class="btn sm" data-act="advance">Advance to the next unit</button></div>`:''}
     </section>`));
-  if(sess && sess.blocks.some(b=>!b.done)){
-    wrap.appendChild(sessionCard(sess));
-  } else {
-    if(sess && sess.blocks.every(b=>b.done)){ /* finished: already logged */ }
+  if(sess && sess.blocks.some(b=>!b.done)){ wrap.appendChild(sessionCard(sess)); }
+  else {
     const c=h(`<section class="card"><h2>How long have you got?</h2>
       <div class="times">${[10,15,20,30,45,60].map(m=>`<button class="timebtn" data-m="${m}">${m}<small>min</small></button>`).join('')}</div>
-      <p class="small">The session keeps the essentials at any length: voice warm-up, the current concept, technique and a song. Longer sessions add both instruments and more time on whatever is rated weakest.</p></section>`);
+      <p class="small">Every length keeps the essentials: voice, the current concept, technique and a song. Longer sessions add both instruments and more time on whatever is rated weakest.</p></section>`);
     c.querySelectorAll('.timebtn').forEach(b=>b.onclick=()=>{ S.session=planSession(+b.dataset.m); save(); render(); });
     wrap.appendChild(c);
-    if(S.sessions.length){ const l=S.sessions[S.sessions.length-1]; wrap.appendChild(h(`<p class="small center">Last session: ${new Date(l.date).toLocaleDateString()} · ${l.minutes} min · ${esc(unitById(l.unit)?.title||'')}</p>`)); }
+    if(S.sessions.length){ const l=S.sessions[S.sessions.length-1]; wrap.appendChild(h(`<p class="small center">Last session: ${new Date(l.date).toLocaleDateString()} · ${l.minutes} min · ${esc((unitById(l.unit)||{}).title||'')}</p>`)); }
   }
   return wrap;
 }
 function sessionCard(sess){
-  const u=unitById(sess.unit);
   const el=h(`<section class="card"><div class="row between"><h2>Today · ${sess.minutes} min</h2><button class="btn ghost sm" data-r="cancel">Discard</button></div>
     ${sess.weakest?`<p class="small">Extra time on <b>${STRAND_LABEL[sess.weakest]}</b> (lowest rated).</p>`:''}
     ${sess.review?`<p class="small">Review session: the song block includes one from an earlier unit.</p>`:''}
-    <ol class="blocks">${sess.blocks.map((b,i)=>`<li class="blk ${b.done?'done':''}" data-i="${i}"><span class="bk-s">${STRAND_LABEL[b.strand]}</span><span class="bk-m">${fmtMin(b.mins)}</span><span class="bk-r">${b.done?['','Struggled','OK','Solid'][b.rating]:'Start →'}</span></li>`).join('')}</ol></section>`);
+    <ol class="blocks">${sess.blocks.map((b,i)=>`<li class="blk ${b.done?'done':''}" data-i="${i}"><span class="bk-s">${STRAND_LABEL[b.strand]}</span><span class="bk-m">${fmtMin(b.mins)}</span><span class="bk-r">${b.done?RATING[b.rating]:'Start →'}</span></li>`).join('')}</ol></section>`);
   el.querySelectorAll('.blk').forEach(li=>li.onclick=()=>{ openBlock=+li.dataset.i; render(); window.scrollTo(0,0); });
   el.querySelector('[data-r="cancel"]').onclick=()=>{ S.session=null; save(); render(); };
   return el;
 }
-
 let blockTimer=null;
+const clock = s=>{ const neg=s<0; s=Math.abs(s); return (neg?'+':'')+Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
 function blockView(sess, i){
   const b=sess.blocks[i], u=unitById(sess.unit);
   const el=h(`<div><section class="card blockhead"><div class="row between"><button class="btn ghost sm" data-r="back">← Session</button>
@@ -959,91 +1569,92 @@ function blockView(sess, i){
     <div data-r="body"></div>
     <section class="card rateblock"><h3>How did that go?</h3><div class="rates">
       <button class="rate r1" data-v="1">Struggled</button><button class="rate r2" data-v="2">OK</button><button class="rate r3" data-v="3">Solid</button></div>
-      <p class="small">Rate the work, not the effort. "Struggled" brings this strand more time next session.</p></section></div>`);
+      <p class="small">Rate the result, not the effort. Partly right is "Struggled" or "OK", not "Solid". A low rating brings this strand more time next session.</p></section></div>`);
   const R=k=>el.querySelector(`[data-r="${k}"]`);
-  R('back').onclick=()=>{ clearInterval(blockTimer); stopLoops(); openBlock=null; render(); };
+  R('back').onclick=()=>{ clearInterval(blockTimer); leave(); openBlock=null; render(); };
   let running=false;
-  R('tgo').onclick=()=>{ ac(); running=!running; R('tgo').textContent=running?'Pause':'Resume'; clearInterval(blockTimer);
-    if(running) blockTimer=setInterval(()=>{ if(!el.isConnected){clearInterval(blockTimer);return;} b.elapsed++; const left=b.mins*60-b.elapsed; R('clock').textContent=clock(left); if(left===0){ playNote(84,0.5); playNote(79,0.6,0.25); } if(b.elapsed%15===0) save(); },1000); };
-  el.querySelectorAll('.rate').forEach(x=>x.onclick=()=>{ clearInterval(blockTimer); stopLoops(); finishBlock(sess,i,+x.dataset.v); });
-  const body=R('body');
-  strandContent(body, b.strand, u, {sess, block:b});
+  R('tgo').onclick=()=>{ running=!running; R('tgo').textContent=running?'Pause':'Resume'; clearInterval(blockTimer);
+    if(running) blockTimer=setInterval(()=>{ if(!el.isConnected){clearInterval(blockTimer);return;} b.elapsed++; const left=b.mins*60-b.elapsed; R('clock').textContent=clock(left); if(left===0){ ac(); playNote(84,0.5,0,0.3,false); playNote(79,0.6,0.25,0.3,false); } if(b.elapsed%15===0) save(); },1000); };
+  el.querySelectorAll('.rate').forEach(x=>x.onclick=()=>{ clearInterval(blockTimer); leave(); finishBlock(sess,i,+x.dataset.v); });
+  strandContent(R('body'), b.strand, u, {sess, block:b});
   return el;
 }
-function clock(s){ const neg=s<0; s=Math.abs(s); return (neg?'+':'')+Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 function finishBlock(sess,i,r){
   const b=sess.blocks[i]; b.done=true; b.rating=r; rate(sess.unit,b.strand,r);
   if(b.strand==='songs') S.bests['songi_'+sess.unit]=(S.bests['songi_'+sess.unit]||0)+1;
-  if(sess.blocks.every(x=>x.done)){
-    S.sessions.push({date:Date.now(), minutes:sess.minutes, unit:sess.unit, ratings:sess.blocks.map(x=>[x.strand,x.rating])});
-  }
+  const all=sess.blocks.every(x=>x.done);
+  if(all) S.sessions.push({date:Date.now(), minutes:sess.minutes, unit:sess.unit, ratings:sess.blocks.map(x=>[x.strand,x.rating])});
   save(); openBlock=null; render(); window.scrollTo(0,0);
-  if(sess.blocks.every(x=>x.done)) setTimeout(()=>{ const a=$('#app'); a.prepend(h(`<section class="card note good"><b>Session logged.</b> ${S.sessions.length} sessions so far.</section>`)); },0);
+  if(all) $('#app').prepend(h(`<section class="card note good"><b>Session logged.</b> ${S.sessions.length} session${S.sessions.length>1?'s':''} so far.</section>`));
 }
 
 // Strand content (used by session blocks and the course unit page)
+function pillTabs(card, items, labelOf, onPick, start=0){
+  const bar=h(`<div class="tabs-mini">${items.map((x,i)=>`<button class="pill" data-t="${i}">${esc(labelOf(x))}</button>`).join('')}</div>`);
+  const pick=i=>{ bar.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',+p.dataset.t===i)); onPick(i); };
+  bar.querySelectorAll('.pill').forEach(p=>p.onclick=()=>pick(+p.dataset.t));
+  card.appendChild(bar); return pick;
+}
 function strandContent(body, strand, u, ctx={}){
-  const lvlStretch = s => S.levels[s]>=2;
+  const add=html=>{ const c=h(html); body.appendChild(c); return c; };
+  const diagrams=()=>`${u.kbd?kbdDiagram(u.kbd):''}${u.fretboard?fretboardSVG(u.fretboard):''}`;
   if(strand==='voice'){
-    body.appendChild(h(`<section class="card"><h2>Ear first</h2><div data-r="ear"></div></section>`));
-    mountEar(body.querySelector('[data-r="ear"]'), u.ear, {count:6, label:u.earLabel});
-    const tc=h(`<section class="card"><h2>Sing</h2><p>${esc(u.voice.core)}</p>${u.voice.stretch?`<p class="stretch"><b>Stretch:</b> ${esc(u.voice.stretch)}</p>`:''}
-      <div class="tabs-mini">${u.voiceTrainers.map((t,i)=>`<button class="pill ${i===0?'on':''}" data-t="${i}">${esc(t.label||(t.kind==='match'?'Pitch matching':'Trainer'))}</button>`).join('')}</div><div data-r="tr"></div></section>`);
-    body.appendChild(tc);
-    const mountT=i=>{ tc.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',+p.dataset.t===i)); mountTrainer(tc.querySelector('[data-r="tr"]'), u.voiceTrainers[i], {instrument:false}); };
-    tc.querySelectorAll('.pill').forEach(p=>p.onclick=()=>mountT(+p.dataset.t)); mountT(0);
+    add(`<section class="card"><h2>Warm-up and technique</h2><p>${esc(u.voiceTech||'')}</p><details><summary class="small">Two-minute warm-up</summary><ol class="steps small">${WARMUP.map(w=>`<li>${esc(w)}</li>`).join('')}</ol></details></section>`);
+    const e=add(`<section class="card"><h2>Ear first</h2><div data-r="ear"></div></section>`);
+    mountEar(e.querySelector('[data-r="ear"]'), u.ear, {count:6, label:u.earLabel});
+    const tc=add(`<section class="card"><h2>Sing</h2><p>${esc(u.voice.core)}</p>${u.voice.stretch?`<p class="stretch"><b>Stretch:</b> ${esc(u.voice.stretch)}</p>`:''}</section>`);
+    const slot=h('<div></div>');
+    const pick=pillTabs(tc, u.voiceTrainers, trainerLabel, i=>mountTrainer(slot, u.voiceTrainers[i], {unitId:u.id}));
+    tc.appendChild(slot); pick(0);
   }
   if(strand==='theory'){
     const first=!S.seenConcept[u.id];
-    const c=h(`<section class="card"><details ${first||!ctx.sess?'open':''}><summary><h2 style="display:inline">${esc(u.title)}</h2> <span class="small">concept</span></summary><div class="concept">${u.concept}</div></details></section>`);
-    body.appendChild(c); S.seenConcept[u.id]=true; save();
-    const ch=h(`<section class="card"><h2>See it</h2><div class="chords">${u.chords.map(chordCard).join('')}</div></section>`);
-    body.appendChild(ch); wireChordButtons(ch);
-    const q=h(`<section class="card"><h2>Check</h2><div data-r="q"></div></section>`); body.appendChild(q);
-    mountQuiz(q.querySelector('[data-r="q"]'), u.quiz, {count:5, onFinish:({score,count})=>{
-      if(ctx.sess){ const r = score>=count*0.8?3:score>=count*0.6?2:1; const hint=q.querySelector('.tr-msg'); hint.innerHTML += ` <br><span class="small">Suggested rating: <b>${['','Struggled','OK','Solid'][r]}</b></span>`; }
-    }});
+    add(`<section class="card"><details ${first||!ctx.sess?'open':''}><summary><h2 style="display:inline">${esc(u.title)}</h2> <span class="small">concept · tap to open or close</span></summary><div class="concept">${u.concept}</div></details></section>`);
+    if(first){ S.seenConcept[u.id]=true; save(); }
+    const ch=add(`<section class="card"><h2>See it</h2>${diagrams()}<div class="chords">${u.chords.map(chordCard).join('')}</div></section>`); wireChordButtons(ch);
+    const q=add(`<section class="card"><h2>Check</h2><div data-r="q"></div></section>`);
+    const review=[...new Set(CURRICULUM.slice(0,unitIndex(u.id)).flatMap(x=>x.quiz))];
+    mountQuiz(q.querySelector('[data-r="q"]'), u.quiz, {count:ctx.sess?6:5, review, onFinish:({score,count})=>{
+      const r = score>=count*0.85?3:score>=count*0.6?2:1; q.querySelector('.tr-msg').innerHTML += ` <br><span class="small">Suggested rating: <b>${RATING[r]}</b></span>`; }});
   }
   if(strand==='guitar' || strand==='piano'){
-    const t=u[strand]; const trs = strand==='guitar'?u.guitarTrainers:u.pianoTrainers;
-    const c=h(`<section class="card"><h2>${strand==='guitar'?'Guitar':'Piano'} technique</h2><p>${esc(t.core)}</p><p class="stretch ${lvlStretch(strand)?'':'dim'}"><b>Stretch${lvlStretch(strand)?'':' (once the core is clean)'}:</b> ${esc(t.stretch)}</p><div data-r="metro"></div></section>`);
-    body.appendChild(c); mountMetro(c.querySelector('[data-r="metro"]'), u.id==='u4'?70:60);
-    const ch=h(`<section class="card"><h2>Chords this unit</h2><div class="chords">${u.chords.map(chordCard).join('')}</div></section>`);
-    body.appendChild(ch); wireChordButtons(ch);
+    const g=strand==='guitar', t=u[strand], trs = g?u.guitarTrainers:u.pianoTrainers, strong=S.levels[strand]>=2;
+    const c=add(`<section class="card"><h2>${g?'Guitar':'Piano'} technique</h2><p>${esc(t.core)}</p><p class="stretch ${strong?'':'dim'}"><b>Stretch${strong?'':' (once the core is clean)'}:</b> ${esc(t.stretch)}</p>${g?(u.fretboard?fretboardSVG(u.fretboard):''):(u.kbd?kbdDiagram(u.kbd):'')}<div data-r="metro"></div></section>`);
+    mountMetro(c.querySelector('[data-r="metro"]'), 60);
+    const rc=add(`<section class="card"><h2>${g?'Strumming and rhythm':'Rhythm'}</h2><p class="small">${g?'Arrows are strum directions. The hand moves on every count and only touches the strings on the arrows.':'Clap or play the pattern on one chord.'} Play along first, then take the tap test: it measures your timing in milliseconds.</p><div data-r="rh"></div></section>`);
+    mountRhythm(rc.querySelector('[data-r="rh"]'), u.rhythm||['main'], {unitId:u.id});
+    const ch=add(`<section class="card"><h2>Chords this unit</h2><div class="chords">${u.chords.map(chordCard).join('')}</div></section>`); wireChordButtons(ch);
     if(trs && trs.length){
-      const tc=h(`<section class="card"><h2>Note check</h2><p class="small">Single notes only. Play each note cleanly and let it ring; any octave counts. Chords and strumming are self-assessed.</p>
-        <div class="tabs-mini">${trs.map((x,i)=>`<button class="pill ${i===0?'on':''}" data-t="${i}">${esc(x.label)}</button>`).join('')}</div><div data-r="tr"></div></section>`);
-      body.appendChild(tc);
-      const mountT=i=>{ tc.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',+p.dataset.t===i)); mountTrainer(tc.querySelector('[data-r="tr"]'), trs[i], {instrument:true}); };
-      tc.querySelectorAll('.pill').forEach(p=>p.onclick=()=>mountT(+p.dataset.t)); mountT(0);
+      const tc=add(`<section class="card"><h2>Note check</h2><p class="small">Single notes only: play each one cleanly and let it ring. Any octave counts. Chords and strumming are self-assessed.</p></section>`);
+      const slot=h('<div></div>'); const pick=pillTabs(tc, trs, trainerLabel, i=>mountTrainer(slot, trs[i], {instrument:true, unitId:u.id})); tc.appendChild(slot); pick(0);
     }
+    if(u.loops){ const lc=add(`<section class="card"><h2>Backing</h2><div data-r="lp"></div></section>`); mountLoop(lc.querySelector('[data-r="lp"]'), u.loops); }
   }
   if(strand==='songs'){
     let songs=u.songs.map(s=>({...s, unit:u}));
-    let pick = ctx.sess ? (ctx.sess.songIdx||0) % songs.length : 0;
-    if(ctx.sess && ctx.sess.review){ const prev=CURRICULUM.slice(0,unitIndex(u.id)); const pu=prev[Math.floor(Math.random()*prev.length)]; if(pu){ const ps=rnd(pu.songs); songs=[...songs, {...ps, unit:pu, review:true}]; } }
-    const c=h(`<section class="card"><h2>Songs</h2><p class="small">Each song uses this unit's concept. Work one per session: chords first, then the strum or accompaniment, then sing. Lyrics for modern songs aren't included: look them up and print or open them alongside.</p>
-      <div class="tabs-mini">${songs.map((s,i)=>`<button class="pill ${i===pick?'on':''}" data-s="${i}">${esc(s.t)}${s.review?' (review)':''}</button>`).join('')}</div><div data-r="song"></div></section>`);
-    body.appendChild(c);
-    const showSong=i=>{ c.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',+p.dataset.s===i)); const s=songs[i]; const box=c.querySelector('[data-r="song"]');
+    const pickIdx = ctx.sess ? (ctx.sess.songIdx||0) % songs.length : 0;
+    if(ctx.sess && ctx.sess.review){ const prev=CURRICULUM.slice(0,unitIndex(u.id)); const pu=prev[ctx.sess.created%prev.length]; if(pu){ const ps=pu.songs[ctx.sess.created%pu.songs.length]; songs=[...songs, {...ps, unit:pu, review:true}]; } }
+    const c=add(`<section class="card"><h2>Songs</h2><p class="small">Each song uses this unit's concept. One per session: chords first, then the strum or accompaniment, then sing. Lyrics for modern songs are not included; open them alongside.</p></section>`);
+    const box=h('<div></div>');
+    const pick=pillTabs(c, songs, s=>s.t+(s.review?' (review)':''), i=>{ const s=songs[i];
+      if(loopOwner && box.contains(loopOwner.el)) stopLoops();
       box.innerHTML=`<div class="song"><h3>${esc(s.t)} <span class="by">${esc(s.a)}</span></h3><div class="tags"><span class="tag">${esc(s.g)}</span>${s.review?`<span class="tag">from: ${esc(s.unit.title)}</span>`:''}</div>
         <p><b>Progression:</b> ${esc(s.prog)}</p><p><b>What it practises:</b> ${esc(s.use)}</p>
-        <ol class="steps small"><li>Play the chords slowly with the metronome until the changes are clean.</li><li>Add the strum or accompaniment pattern.</li><li>Speak the lyrics in rhythm over it, then sing.</li></ol>
+        <ol class="steps small"><li>Play the chords slowly with the metronome until the changes are clean.</li><li>Add the strum or accompaniment pattern.</li><li>Speak the lyrics in rhythm over it, then sing with a simplified strum, then the full pattern.</li></ol>
         <div data-r="metro"></div>${s.melody?`<h3>Melody check</h3><div data-r="mel"></div>`:''}</div>`;
       mountMetro(box.querySelector('[data-r="metro"]'), 72);
-      if(s.melody) mountTrainer(box.querySelector('[data-r="mel"]'), {kind:'seq',label:s.melody+' (voice)',fit:true,midi:MELODIES[s.melody]}, {instrument:false});
-    };
-    c.querySelectorAll('.pill').forEach(p=>p.onclick=()=>showSong(+p.dataset.s)); showSong(pick);
+      if(s.melody) mountTrainer(box.querySelector('[data-r="mel"]'), {kind:'seq',label:s.melody+' (voice)',fit:true,midi:MELODIES[s.melody]}, {unitId:u.id});
+    });
+    c.appendChild(box); pick(pickIdx);
+    if(u.loops){ const lc=add(`<section class="card"><h2>Backing for this unit</h2><div data-r="lp"></div></section>`); mountLoop(lc.querySelector('[data-r="lp"]'), u.loops); }
   }
 }
-function wireChordButtons(root){ root.querySelectorAll('[data-act="playchord"]').forEach(b=>b.onclick=()=>{ ac(); playChordMidi(chordMidis(b.dataset.chord),1.8,0.07); }); }
 
 // ----- COURSE -----
 function courseView(){
   if(courseUnit) return unitView(unitById(courseUnit));
-  const wrap=h(`<div><section class="card"><h1>Course</h1><p class="lead">Twelve units in three stages. Each unit is one concept worked through theory, guitar, piano, voice and songs. Advance when every strand is rated solid, or jump anywhere.</p></section></div>`);
-  let stage='';
-  const list=h(`<section class="card units"></section>`);
+  const wrap=h(`<div><section class="card"><h1>Course</h1><p class="lead">${CURRICULUM.length} units in four stages. Each unit is one concept worked through theory, guitar, piano, voice and songs. Advance when every strand is rated solid, or jump anywhere.</p></section></div>`);
+  let stage=''; const list=h(`<section class="card units"></section>`);
   CURRICULUM.forEach((u,i)=>{
     if(u.stage!==stage){ stage=u.stage; list.appendChild(h(`<div class="stage">${esc(stage)}</div>`)); }
     const cur=u.id===S.unit, done=S.completed.includes(u.id);
@@ -1059,90 +1670,95 @@ function unitView(u){
     <div class="eyebrow">${esc(u.stage)} · Unit ${i+1}</div><h1>${esc(u.title)}</h1>
     <div class="row">${u.id===S.unit?'<span class="tag">Current unit</span>':`<button class="btn sm" data-r="make">Make this my current unit</button>`}
     ${S.completed.includes(u.id)?'<span class="tag">Done</span>':`<button class="btn ghost sm" data-r="done">Mark done</button>`}</div></section>
-    <div class="tabs-mini big">${STRANDS.map((s,k)=>`<button class="pill ${k===1?'on':''}" data-s="${s}">${STRAND_LABEL[s]}</button>`).join('')}</div><div data-r="body"></div></div>`);
+    <div class="tabs-mini big">${STRANDS.map(s=>`<button class="pill" data-s="${s}">${STRAND_LABEL[s]}</button>`).join('')}</div><div data-r="body"></div></div>`);
   const R=k=>wrap.querySelector(`[data-r="${k}"]`);
-  R('back').onclick=()=>{ stopLoops(); courseUnit=null; render(); };
-  if(R('make')) R('make').onclick=()=>{ S.unit=u.id; S.session=null; save(); render(); };
-  if(R('done')) R('done').onclick=()=>{ if(!S.completed.includes(u.id)) S.completed.push(u.id); save(); render(); };
-  const show=s=>{ stopLoops(); wrap.querySelectorAll('.tabs-mini.big .pill').forEach(p=>p.classList.toggle('on',p.dataset.s===s)); const b=R('body'); b.innerHTML=''; strandContent(b,s,u,{}); };
+  R('back').onclick=()=>{ leave(); courseUnit=null; render(); };
+  if(R('make')) R('make').onclick=()=>{ leave(); S.unit=u.id; S.session=null; save(); render(); };
+  if(R('done')) R('done').onclick=()=>{ leave(); if(!S.completed.includes(u.id)) S.completed.push(u.id); save(); render(); };
+  const show=s=>{ leave(); wrap.querySelectorAll('.tabs-mini.big .pill').forEach(p=>p.classList.toggle('on',p.dataset.s===s)); const b=R('body'); b.innerHTML=''; strandContent(b,s,u,{}); };
   wrap.querySelectorAll('.tabs-mini.big .pill').forEach(p=>p.onclick=()=>show(p.dataset.s));
-  setTimeout(()=>show('theory'),0);
+  show('theory');
   return wrap;
 }
 function advanceUnit(){
-  const i=unitIndex(S.unit); if(!S.completed.includes(S.unit)) S.completed.push(S.unit);
+  leave(); const i=unitIndex(S.unit); if(!S.completed.includes(S.unit)) S.completed.push(S.unit);
   if(i<CURRICULUM.length-1) S.unit=CURRICULUM[i+1].id; S.session=null; save(); render();
 }
 
 // ----- TOOLS -----
+const TOOLS=[['metro','Metronome'],['tuner','Tuner / pitch meter'],['match','Pitch matching'],['hold','Hold a note'],['ear','Ear trainer'],['rhythm','Rhythm trainer'],['loops','Backing loops'],['drone','Drone'],['keys','Keyboard'],['chords','Chord library'],['range','Range finder'],['mic','Microphone check']];
 function toolsView(){
-  const wrap=h(`<div><section class="card"><h1>Tools</h1><div class="toolgrid">
-    <button class="tool" data-t="metro">Metronome</button><button class="tool" data-t="tuner">Pitch meter / tuner</button>
-    <button class="tool" data-t="match">Pitch matching</button><button class="tool" data-t="ear">Ear trainer</button>
-    <button class="tool" data-t="chords">Chord library</button><button class="tool" data-t="range">Range finder</button></div></section><div data-r="body"></div></div>`);
+  const wrap=h(`<div><section class="card"><h1>Tools</h1><div class="toolgrid">${TOOLS.map(([k,l])=>`<button class="tool" data-t="${k}">${l}</button>`).join('')}</div></section><div data-r="body"></div></div>`);
   const body=wrap.querySelector('[data-r="body"]');
-  const open=t=>{ stopLoops(); toolView=t; wrap.querySelectorAll('.tool').forEach(b=>b.classList.toggle('on',b.dataset.t===t)); body.innerHTML='';
+  const open=t=>{ leave(); toolView=t; wrap.querySelectorAll('.tool').forEach(b=>b.classList.toggle('on',b.dataset.t===t)); body.innerHTML='';
     const c=h(`<section class="card"></section>`); body.appendChild(c);
     if(t==='metro'){ c.innerHTML='<h2>Metronome</h2><div></div>'; mountMetro(c.lastChild); }
     if(t==='tuner') mountTuner(c);
+    if(t==='mic') mountMicCheck(c);
+    if(t==='drone') mountDrone(c);
+    if(t==='keys') mountKeyboard(c);
     if(t==='match'){ c.innerHTML='<h2>Pitch matching</h2><div></div>'; mountTrainer(c.lastChild,{kind:'match',count:12},{}); }
+    if(t==='hold'){ c.innerHTML='<h2>Hold a note</h2><p class="small">The trace shows drift. A steady line inside the band for the full time is the goal.</p><div></div>'; mountTrainer(c.lastChild,{kind:'hold',label:'Hold a note steady (6 s)',seconds:6,count:4},{}); }
     if(t==='range'){ c.innerHTML='<h2>Range finder</h2><div></div>'; mountRange(c.lastChild); }
+    if(t==='rhythm'){ c.innerHTML='<h2>Rhythm trainer</h2><div></div>'; mountRhythm(c.lastChild, Object.keys(RHYTHMS)); }
+    if(t==='loops'){ c.innerHTML='<h2>Backing loops</h2><p class="small">Every loop in the course, for improvising or singing over.</p><div></div>'; const all=[]; const seen=new Set(); CURRICULUM.forEach(u=>(u.loops||[]).forEach(l=>{ if(!seen.has(l.label)){ seen.add(l.label); all.push(l); } })); mountLoop(c.lastChild, all); }
     if(t==='ear'){ c.innerHTML=`<h2>Ear trainer</h2><div class="tabs-mini"><button class="pill on" data-e="iv">Intervals</button><button class="pill" data-e="tri">Major / minor</button><button class="pill" data-e="sev">Sevenths</button></div><div data-r="e"></div>`;
       const go=e=>{ c.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p.dataset.e===e)); const spec={iv:{intervals:[2,3,4,5,7,9,12]},tri:{qualities:['maj','min']},sev:{qualities:['maj7','min7','dom7']}}[e]; mountEar(c.querySelector('[data-r="e"]'),spec,{count:10,label:'Free practice'}); };
       c.querySelectorAll('.pill').forEach(p=>p.onclick=()=>go(p.dataset.e)); go('iv'); }
     if(t==='chords'){ c.innerHTML=`<h2>Chord library</h2><div class="chords">${Object.keys(GUITAR_SHAPES).map(chordCard).join('')}</div>`; wireChordButtons(c); }
   };
   wrap.querySelectorAll('.tool').forEach(b=>b.onclick=()=>open(b.dataset.t));
-  if(toolView) setTimeout(()=>open(toolView),0);
+  if(toolView) open(toolView);
   return wrap;
-}
-function mountTuner(c){
-  c.innerHTML=`<h2>Pitch meter</h2><p class="small">Shows the note you're singing or playing. Use it to tune the guitar (E A D G B E) or to watch how steady a held note is.</p>
-    <button class="btn" data-r="go">🎤 Listen</button><div class="tr-target" data-r="n">–</div>
-    <div class="meter"><div class="meter-zone"></div><div class="meter-needle" data-r="needle"></div><div class="meter-ticks"><span>flat</span><span>in tune</span><span>sharp</span></div></div><div class="tr-heard" data-r="hz"></div><div class="tr-msg" data-r="msg"></div>`;
-  const R=k=>c.querySelector(`[data-r="${k}"]`);
-  function loop(){ const r=Mic.read(); if(r&&r.freq>0){ const mf=freqToMidi(r.freq), n=Math.round(mf), cents=Math.round((mf-n)*100);
-      R('n').textContent=midiName(n); R('needle').style.left=(50+cents)+'%'; R('needle').classList.toggle('good',Math.abs(cents)<10); R('hz').textContent=`${r.freq.toFixed(1)} Hz · ${cents>0?'+':''}${cents} cents`; }
-    activeLoop=requestAnimationFrame(loop); }
-  R('go').onclick=async()=>{ ac(); if(!(await Mic.start())){ R('msg').innerHTML=micBlockedMsg(); return; } R('go').disabled=true; loop(); };
 }
 
 // ----- PROGRESS -----
 function progressView(){
   const totalMin=S.sessions.reduce((a,s)=>a+s.minutes,0);
   const days=new Set(S.sessions.map(s=>new Date(s.date).toDateString())).size;
+  const mv=S.metrics.filter(m=>m.k==='voice'), avgOf=a=>a.length?Math.round(a.reduce((x,m)=>x+m.cents,0)/a.length):null;
+  const recent=avgOf(mv.slice(-5)), before=avgOf(mv.slice(-10,-5));
+  const rh=S.metrics.filter(m=>m.k==='rhythm').slice(-5); const rhAvg=rh.length?Math.round(rh.reduce((x,m)=>x+m.spread,0)/rh.length):null;
+  const row=m=>{ const d=new Date(m.d).toLocaleDateString(); if(m.k==='voice'||m.k==='inst') return `<tr><td>${d}</td><td>${m.k==='voice'?'Voice':'Instrument'}: ${esc(m.label)}</td><td>${m.hits}/${m.total} · ${m.cents} cents</td></tr>`;
+    if(m.k==='rhythm') return `<tr><td>${d}</td><td>Rhythm: ${esc(m.label)} at ${m.bpm}</td><td>${m.hits}/${m.total} · ±${m.spread} ms</td></tr>`;
+    if(m.k==='ear') return `<tr><td>${d}</td><td>Ear: ${esc(m.label)}</td><td>${m.score}/${m.total}</td></tr>`;
+    return `<tr><td>${d}</td><td>Theory quiz</td><td>${m.score}/${m.total}</td></tr>`; };
   const wrap=h(`<div><section class="card"><h1>Progress</h1>
     <div class="stats"><div><b>${S.sessions.length}</b><span>sessions</span></div><div><b>${Math.round(totalMin/6)/10}</b><span>hours</span></div><div><b>${days}</b><span>days practised</span></div><div><b>${S.completed.length}</b><span>units done</span></div></div></section>
+    <section class="card"><h2>Measured accuracy</h2>
+      <div class="stats two"><div><b>${recent==null?'–':recent+'¢'}</b><span>voice pitch error, last 5 trainers${before!=null?` (previous 5: ${before}¢)`:''}</span></div><div><b>${rhAvg==null?'–':'±'+rhAvg+' ms'}</b><span>rhythm consistency, last 5 tap tests</span></div></div>
+      <p class="small">Pitch error is the average distance from the target while you were on the note, in cents (100 cents = one half step). Under 20 is good; over 35 is audibly out.</p>
+      ${S.metrics.length?`<table class="rt left"><tbody>${S.metrics.slice(-12).reverse().map(row).join('')}</tbody></table>`:'<p class="small">Nothing measured yet. Trainers, tap tests and quizzes log here.</p>'}</section>
     <section class="card"><h2>Ratings by unit</h2><p class="small">Average of the last three ratings per strand (1 = struggled, 3 = solid). Below 2 is a weakness.</p>
     <table class="rt"><thead><tr><th>Unit</th>${STRANDS.map(s=>`<th>${STRAND_LABEL[s]}</th>`).join('')}</tr></thead><tbody>
     ${CURRICULUM.filter(u=>S.ratings[u.id]||u.id===S.unit).map(u=>`<tr><td>${unitIndex(u.id)+1}. ${esc(u.title)}</td>${STRANDS.map(s=>{const a=strandAvg(u.id,s); return `<td class="l${a==null?0:Math.round(a)}">${a==null?'–':a.toFixed(1)}</td>`;}).join('')}</tr>`).join('')}
     </tbody></table></section>
-    <section class="card"><h2>Recent sessions</h2>${S.sessions.length?`<ul class="sesslist">${S.sessions.slice(-10).reverse().map(s=>`<li>${new Date(s.date).toLocaleDateString()} · ${s.minutes} min · ${esc(unitById(s.unit)?.title||'')}</li>`).join('')}</ul>`:'<p class="small">None yet.</p>'}</section>
+    <section class="card"><h2>Recent sessions</h2>${S.sessions.length?`<ul class="sesslist">${S.sessions.slice(-10).reverse().map(s=>`<li>${new Date(s.date).toLocaleDateString()} · ${s.minutes} min · ${esc((unitById(s.unit)||{}).title||'')}</li>`).join('')}</ul>`:'<p class="small">None yet.</p>'}</section>
     <section class="card"><h2>Settings</h2><div class="row">${rangeSel('low','Lowest note',S.range.low)} ${rangeSel('high','Highest note',S.range.high)}</div>
+      <label class="chk block"><input type="checkbox" data-r="hp" ${S.settings.headphones?'checked':''}> I am using headphones (keep pitch checking on while the app plays sound)</label>
       <div class="row"><button class="btn ghost sm" data-r="replace">Redo placement</button></div></section>
-    <section class="card"><h2>Backup</h2><p class="small">${cloudOK?'Progress syncs to your Claude account while you use the app inside Claude.':'Progress is saved in this browser.'} Copy a backup code to move progress between the Claude version and the standalone copy, or as insurance.</p>
+    <section class="card"><h2>Backup</h2><p class="small">${cloudOK?'Progress syncs to your Claude account while you use the app inside Claude.':'Progress is saved in this browser on this device.'} A backup code moves progress between the Claude copy and the hosted copy, and protects against Safari clearing site data.</p>
       <div class="row"><button class="btn sm" data-r="copy">Copy backup code</button><button class="btn ghost sm" data-r="imp">Restore from code</button></div>
       <textarea data-r="ta" rows="3" placeholder="Paste a backup code here, then tap Restore" hidden></textarea><div class="tr-msg" data-r="msg"></div></section>
-    <section class="card"><h2>Reset</h2><button class="btn ghost sm danger" data-r="reset">Reset all progress</button><div data-r="confirm"></div></section></div>`);
+    <section class="card"><h2>Reset</h2><button class="btn ghost sm danger" data-r="reset">Reset all progress</button><div data-r="confirm"></div><p class="small">${BUILD}</p></section></div>`);
   const R=k=>wrap.querySelector(`[data-r="${k}"]`);
   wrap.querySelectorAll('[data-range]').forEach(s=>s.onchange=()=>{ S.range[s.dataset.range]=+s.value; save(); });
+  R('hp').onchange=e=>{ S.settings.headphones=e.target.checked; save(); };
   R('replace').onclick=()=>{ S.placed=false; save(); render(); };
   R('copy').onclick=async()=>{ const code=btoa(unescape(encodeURIComponent(JSON.stringify(S)))); try{ await navigator.clipboard.writeText(code); R('msg').textContent='Copied.'; }catch(e){ R('ta').hidden=false; R('ta').value=code; R('ta').select(); R('msg').textContent='Clipboard blocked: the code is in the box; select and copy it.'; } };
   R('imp').onclick=()=>{ const ta=R('ta'); if(ta.hidden){ ta.hidden=false; ta.value=''; ta.focus(); R('msg').textContent='Paste the code, then tap Restore again.'; return; }
     try{ const obj=JSON.parse(decodeURIComponent(escape(atob(ta.value.trim())))); if(!obj || !obj.ratings) throw 0; S=Object.assign(defaultState(),obj); save(); R('msg').textContent='Restored.'; setTimeout(render,600);}catch(e){ R('msg').textContent='That code is not valid.'; } };
-  R('reset').onclick=()=>{ const c=R('confirm'); c.innerHTML='<p>This deletes all ratings and sessions.</p><button class="btn sm danger">Yes, reset</button>'; c.querySelector('button').onclick=()=>{ S=defaultState(); save(); view='today'; render(); }; };
+  R('reset').onclick=()=>{ const c=R('confirm'); c.innerHTML='<p>This deletes all ratings, sessions and measurements.</p><button class="btn sm danger">Yes, reset</button>'; c.querySelector('button').onclick=()=>{ S=defaultState(); save(); view='today'; render(); }; };
   return wrap;
 }
 
 // ===== BOOT =====
-document.addEventListener('click', e=>{
-  const a=e.target.closest('[data-act]'); if(!a) return;
-  if(a.dataset.act==='advance') advanceUnit();
-});
+document.addEventListener('click', e=>{ const a=e.target.closest('[data-act]'); if(a && a.dataset.act==='advance') advanceUnit(); });
 document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>setView(b.dataset.v));
+if(!unitById(S.unit)) S.unit='u1';
 render();
 setTimeout(initCloud, 50);
-setTimeout(()=>{ if(!dbDoc) initCloud(); }, 2000);
+setTimeout(initCloud, 2500);
 
 </script>
 </body>
